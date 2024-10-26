@@ -218,3 +218,4 @@ tri_files:
       - name: tri_chem_id
       - name: potw_registry_id
       - name: off_site_total_potw_transfer
+        is_potw: true

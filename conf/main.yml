@@ -1,0 +1,211 @@
+industry_sectors:
+  description: Plastic related industry sectors based on NAICS codes.
+  naics_code:
+    - 
+plastics_additives:
+  description: Plastic additives based on TRI reporting.
+  tri_chem_id:
+    -
+tri_files:
+  file_1a:
+    needed_columns:
+      - name: trifid
+      - name: tri_chem_id
+      - name: unit_of_measure
+      - name: on_site_fugitive_air_emissions
+        relase_type: Fugitive air release
+      - name: on_site_stack_air_emissions
+        relase_type: Stack air release
+      - name: on_site_discharges_to_stream_a
+        relase_type: On-site surface water release
+      - name: on_site_discharges_to_stream_b
+        relase_type: On-site surface water release
+      - name: on_site_discharges_to_stream_c
+        relase_type: On-site surface water release
+      - name: on_site_discharges_to_stream_d
+        relase_type: On-site surface water release
+      - name: on_site_discharges_to_stream_e
+        relase_type: On-site surface water release
+      - name: on_site_discharges_to_stream_f
+        relase_type: On-site surface water release
+      - name: on_site_discharges_to_stream_g
+        relase_type: On-site surface water release
+      - name: on_site_discharges_to_stream_h
+        relase_type: On-site surface water release
+      - name: on_site_discharges_to_stream_i
+        relase_type: On-site surface water release
+      - name: on_site_underground_injection
+        management_type: Disposal
+      - name: on_site_underground_injection_to_class_i_wells
+        management_type: Disposal
+        is_hazardous_waste: True
+      - name: on_site_underground_injection_to_class_ii_v_wells
+        management_type: Disposal
+        is_hazardous_waste: True
+      - name: on_site_landfills
+        management_type: Disposal
+        is_landfilling: True
+      - name: on_site_rcra_subtitle_c_landfills
+        management_type: Disposal
+        is_hazardous_waste: True
+        is_landfilling: True
+      - name: on_site_other_landfills
+        management_type: Disposal
+      - name: on_site_land_treatment_application_farming
+        relase_type: On-site soil release
+      - name: on_site_surface_impoundment
+        management_type: Disposal
+      - name: on_site_rcra_c_surface_impoundment
+        management_type: Disposal
+        is_hazardous_waste: True
+      - name: on_site_other_surface_impoundment
+        management_type: Disposal
+      - name: on_site_other_disposal
+        relase_type: On-site soil release
+        management_type: Disposal
+      - name: on_site_energy_recovery
+        management_type: Energy recovery
+      - name: on_site_recycled
+        management_type: Recycling
+        is_recycling: True
+      - name: on_site_treated
+        management_type: Treatment
+  file_1b:
+    needed_columns:
+      - name: trifid
+      - name: primary_naics_code
+      - name: tri_chem_id
+      - name: chemical_name
+      - name: produce_the_chemical
+      - name: import_the_chemical
+      - name: on_site_use_of_the_chemical
+      - name: sale_or_distribution_of_the_chemical
+      - name: as_a_byproduct
+      - name: as_a_manufactured_impurity
+      - name: used_as_a_reactant
+      - name: added_as_a_formulation_component
+      - name: p201_additives
+        description: Directly signifies an additive role.
+      - name: p202_dyes
+        description: Commonly used in plastics for coloring.
+      - name: p205_solvents
+        description: Often used to facilitate mixing or processing of plastic components.
+      - name: p206_inhibitors
+        description: May be added to prevent undesirable reactions in plastic formulations.
+      - name: p207_emulsifiers
+        description: Used to improve stability in certain plastic formulations.
+      - name: p208_surfactants
+        description: Often added to alter surface properties or improve dispersibility.
+      - name: p209_lubricants
+        description: Common in plastics to ease processing or improve material flow.
+      - name: p210_flame_retardants
+        description: Widely used in plastics for safety and fire resistance.
+      - name: p211_rheological_modifiers
+        description: Added to control the flow properties of plastics.
+      - name: used_as_an_article_component
+      - name: repackaging
+      - name: as_a_process_impurity
+      - name: recycling
+      - name: used_as_a_chemical_processing_aid
+      - name: used_as_a_manufacturing_aid
+      - name: ancillary_or_other_use
+      - name: z303_lubricant
+        description: As lubricants are often essential for processing and end-use of plastics.
+      - name: z305_flame_retardant
+        description: Flame retardants are a major category of plastic additives.
+  file_3a:
+    needed_columns:
+      - name: trifid
+      - name: tri_chem_id
+      - name: unit_of_measure
+      - name: off_site_rcra_id_nr
+      - name: off_site_frs_id
+      - name: off_site_storage_only
+        management_type: Disposal
+      - name: off_site_solidification_stabilization_metals
+        management_type: Treatment
+        is_for_metals: True
+      - name: off_site_wastewater_treatment_metals
+        management_type: Treatment
+        is_for_metals: True
+        is_wastewater: True
+      - name: off_site_solidification_stabilization
+        management_type: Treatment
+      - name: off_site_wastewater_treatment_excluding_potws_metals_and_metal_compounds_only
+        management_type: Treatment
+        is_for_metals: True
+        is_wastewater: True
+      - name: off_site_underground_injection
+        management_type: Disposal
+      - name: off_site_underground_injection_class_i_wells
+        management_type: Disposal
+      - name: off_site_underground_injection_class_ii_v_wells
+        management_type: Disposal
+      - name: off_site_landfills_disposal_surface_impoundment
+        management_type: Disposal
+        is_landfilling: True
+      - name: off_site_rcra_subtitle_c_surface_impoundment
+        management_type: Disposal
+      - name: off_site_other_surface_impoundment
+        management_type: Disposal
+      - name: off_site_other_landfills
+        management_type: Disposal
+        is_landfilling: True
+      - name: off_site_rcra_subtitle_c_landfills
+        management_type: Disposal
+        is_landfilling: True
+      - name: off_site_land_treatment
+        relase_type: Off-site soil release
+      - name: off_site_other_land_disposal
+        management_type: Disposal
+      - name: off_site_other_off_site_management
+        management_type: Disposal
+      - name: off_site_transfer_to_waste_broker_for_disposal
+        management_type: Disposal
+        is_brokering: True
+      - name: off_site_disposal_unknown
+        management_type: Disposal
+      - name: off_site_solvents_organics_recovery
+        management_type: Recycling
+        is_recycling: True
+      - name: off_site_metals_recovery
+        management_type: Recycling
+        is_for_metals: True
+        is_recycling: True
+      - name: off_site_acid_regeneration
+        management_type: Recycling
+        is_recycling: True
+      - name: off_site_other_reuse_or_recovery
+        management_type: Recycling
+        is_recycling: True
+      - name: off_site_transfer_to_waste_broker_for_recycling
+        management_type: Recycling
+        is_brokering: True
+        is_recycling: True
+      - name: off_site_energy_recovery
+        management_type: Energy recovery 
+      - name: off_site_transfer_to_waste_broker_for_energy_recovery
+        management_type: Energy recovery
+        is_brokering: True
+      - name: off_site_solidification_stabilization_treatment_non_metals
+        management_type: Treatment
+      - name: off_site_incineration_thermal_treatment
+        management_type: Treatment
+        is_incineration: True
+      - name: off_site_incineration_insignificant_fuel_value
+        management_type: Treatment
+        is_incineration: True
+      - name: off_site_wastewater_treatment_excluding_potws_non_metals
+        management_type: Treatment
+        is_wastewater: True
+      - name: off_site_other_waste_treatment
+        management_type: Treatment
+      - name: off_site_transfer_to_waste_broker_for_waste_treatment
+        management_type: Treatment
+        is_brokering: True
+  file_3c:
+    needed_columns:
+      - name: trifid
+      - name: tri_chem_id
+      - name: potw_registry_id
+      - name: off_site_total_potw_transfer

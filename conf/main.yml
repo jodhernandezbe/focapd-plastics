@@ -1,7 +1,16 @@
+---
+defaults:
+  - _self_
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+hydra:
+  output_subdir: null
+  run:
+    dir: .
 industry_sectors:
   description: Plastic related industry sectors based on NAICS codes.
   naics_code:
-    - 
+    -
 plastics_additives:
   description: Plastic additives based on TRI reporting.
   tri_chem_id:
@@ -38,17 +47,17 @@ tri_files:
         management_type: Disposal
       - name: on_site_underground_injection_to_class_i_wells
         management_type: Disposal
-        is_hazardous_waste: True
+        is_hazardous_waste: true
       - name: on_site_underground_injection_to_class_ii_v_wells
         management_type: Disposal
-        is_hazardous_waste: True
+        is_hazardous_waste: true
       - name: on_site_landfills
         management_type: Disposal
-        is_landfilling: True
+        is_landfilling: true
       - name: on_site_rcra_subtitle_c_landfills
         management_type: Disposal
-        is_hazardous_waste: True
-        is_landfilling: True
+        is_hazardous_waste: true
+        is_landfilling: true
       - name: on_site_other_landfills
         management_type: Disposal
       - name: on_site_land_treatment_application_farming
@@ -57,7 +66,7 @@ tri_files:
         management_type: Disposal
       - name: on_site_rcra_c_surface_impoundment
         management_type: Disposal
-        is_hazardous_waste: True
+        is_hazardous_waste: true
       - name: on_site_other_surface_impoundment
         management_type: Disposal
       - name: on_site_other_disposal
@@ -67,7 +76,7 @@ tri_files:
         management_type: Energy recovery
       - name: on_site_recycled
         management_type: Recycling
-        is_recycling: True
+        is_recycling: true
       - name: on_site_treated
         management_type: Treatment
   file_1b:
@@ -124,17 +133,17 @@ tri_files:
         management_type: Disposal
       - name: off_site_solidification_stabilization_metals
         management_type: Treatment
-        is_for_metals: True
+        is_for_metals: true
       - name: off_site_wastewater_treatment_metals
         management_type: Treatment
-        is_for_metals: True
-        is_wastewater: True
+        is_for_metals: true
+        is_wastewater: true
       - name: off_site_solidification_stabilization
         management_type: Treatment
       - name: off_site_wastewater_treatment_excluding_potws_metals_and_metal_compounds_only
         management_type: Treatment
-        is_for_metals: True
-        is_wastewater: True
+        is_for_metals: true
+        is_wastewater: true
       - name: off_site_underground_injection
         management_type: Disposal
       - name: off_site_underground_injection_class_i_wells
@@ -143,17 +152,17 @@ tri_files:
         management_type: Disposal
       - name: off_site_landfills_disposal_surface_impoundment
         management_type: Disposal
-        is_landfilling: True
+        is_landfilling: true
       - name: off_site_rcra_subtitle_c_surface_impoundment
         management_type: Disposal
       - name: off_site_other_surface_impoundment
         management_type: Disposal
       - name: off_site_other_landfills
         management_type: Disposal
-        is_landfilling: True
+        is_landfilling: true
       - name: off_site_rcra_subtitle_c_landfills
         management_type: Disposal
-        is_landfilling: True
+        is_landfilling: true
       - name: off_site_land_treatment
         relase_type: Off-site soil release
       - name: off_site_other_land_disposal
@@ -162,47 +171,47 @@ tri_files:
         management_type: Disposal
       - name: off_site_transfer_to_waste_broker_for_disposal
         management_type: Disposal
-        is_brokering: True
+        is_brokering: true
       - name: off_site_disposal_unknown
         management_type: Disposal
       - name: off_site_solvents_organics_recovery
         management_type: Recycling
-        is_recycling: True
+        is_recycling: true
       - name: off_site_metals_recovery
         management_type: Recycling
-        is_for_metals: True
-        is_recycling: True
+        is_for_metals: true
+        is_recycling: true
       - name: off_site_acid_regeneration
         management_type: Recycling
-        is_recycling: True
+        is_recycling: true
       - name: off_site_other_reuse_or_recovery
         management_type: Recycling
-        is_recycling: True
+        is_recycling: true
       - name: off_site_transfer_to_waste_broker_for_recycling
         management_type: Recycling
-        is_brokering: True
-        is_recycling: True
+        is_brokering: true
+        is_recycling: true
       - name: off_site_energy_recovery
-        management_type: Energy recovery 
+        management_type: Energy recovery
       - name: off_site_transfer_to_waste_broker_for_energy_recovery
         management_type: Energy recovery
-        is_brokering: True
+        is_brokering: true
       - name: off_site_solidification_stabilization_treatment_non_metals
         management_type: Treatment
       - name: off_site_incineration_thermal_treatment
         management_type: Treatment
-        is_incineration: True
+        is_incineration: true
       - name: off_site_incineration_insignificant_fuel_value
         management_type: Treatment
-        is_incineration: True
+        is_incineration: true
       - name: off_site_wastewater_treatment_excluding_potws_non_metals
         management_type: Treatment
-        is_wastewater: True
+        is_wastewater: true
       - name: off_site_other_waste_treatment
         management_type: Treatment
       - name: off_site_transfer_to_waste_broker_for_waste_treatment
         management_type: Treatment
-        is_brokering: True
+        is_brokering: true
   file_3c:
     needed_columns:
       - name: trifid

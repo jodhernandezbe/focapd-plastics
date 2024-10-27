@@ -5,6 +5,48 @@
 
 This repository contains the code to generate discrete distribution based on TRI data, as part of the FOCAPD 2024 Special Issue invitation.
 
+## Project tree
+
+```
+.
+├── ancillary
+│   ├── tri_file_1a_columns.txt
+│   ├── tri_file_1b_columns.txt
+│   ├── tri_file_3a_columns.txt
+│   └── tri_file_3c_columns.txt
+├── conf
+│   └── main.yaml
+├── data
+│   ├── processed
+│   │   └── tri_eol_additives.sqlite
+│   └── raw
+│       ├── US_1a_2022.txt
+│       ├── US_1b_2022.txt
+│       ├── US_3a_2022.txt
+│       └── US_3c_2022.txt
+├── pyproject.toml
+└── src
+    ├── data_processing
+    │   ├── create_sqlite_db.py
+    │   ├── data_models.py
+    │   ├── frs_api_queries.py
+    │   ├── main.py
+    │   ├── naics_api_queries.py
+    │   └── tri
+    │       ├── load.py
+    │       ├── transform
+    │       │   ├── base.py
+    │       │   ├── file_1a.py
+    │       │   ├── file_1b.py
+    │       │   ├── file_3a.py
+    │       │   └── file_3c.py
+    │       └── utils.py
+    └── stat_distribution
+        ├── __init__.py
+        ├── db_queries.py
+        └── dist_generator.py
+```
+
 ## Requirements
 
 1. Python >=3.12, <3.13
@@ -132,3 +174,7 @@ Feel free to use unit or integration testing for QA. As suggestion, include it a
 ### Data orchestator
 
 Feel free to use a data orchestator like Airflow or Prefect. This would be more important if you try to increase the data volume.
+
+### Note
+
+The project structure follows a modular approach to facilitate the expansion and mantainability. In addition, it follows a single responsability principle and separation of concern. Keep this principle as part of good practices and clean code.

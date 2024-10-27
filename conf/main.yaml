@@ -14,9 +14,16 @@ industry_sectors:
 plastics_additives:
   description: Plastic additives based on TRI reporting.
   tri_chem_id:
-    -
+    - "0007440666"
+    - "0007664393"
+    - "0000108883"
+potw_naics_code: "221320"
 tri_files:
+  columns_folder: ancillary
   file_1a:
+    var_name: eol_name
+    value_name: amount
+    columns_file: tri_file_1a_columns.txt
     needed_columns:
       - name: trifid
         is_general_info: true
@@ -24,6 +31,7 @@ tri_files:
         is_general_info: true
       - name: unit_of_measure
         is_unit_of_measure: true    # Just in case that the name changes
+        is_general_info: true
       - name: on_site_fugitive_air_emissions
         relase_type: Fugitive air release
       - name: on_site_stack_air_emissions
@@ -83,6 +91,10 @@ tri_files:
       - name: on_site_treated
         management_type: Treatment
   file_1b:
+    var_name: chemical_activity
+    value_name: is_performed
+    columns_file: tri_file_1b_columns.txt
+    naics_code_column: primary_naics_code
     needed_columns:
       - name: trifid
         is_general_info: true
@@ -141,6 +153,10 @@ tri_files:
         description: Flame retardants are a major category of plastic additives.
         depends_on: ancillary_or_other_use
   file_3a:
+    off_site_frs_id_column: off_site_frs_id
+    var_name: eol_name
+    value_name: amount
+    columns_file: tri_file_3a_columns.txt
     needed_columns:
       - name: trifid
         is_general_info: true
@@ -148,22 +164,25 @@ tri_files:
         is_general_info: true
       - name: unit_of_measure
         is_unit_of_measure: true
+        is_general_info: true
       - name: off_site_rcra_id_nr
+        is_general_info: true
       - name: off_site_frs_id
+        is_general_info: true
       - name: off_site_storage_only
         management_type: Disposal
       - name: off_site_solidification_stabilization_metals
         management_type: Treatment
-        is_for_metals: true
+        is_metal: true
       - name: off_site_wastewater_treatment_metals
         management_type: Treatment
-        is_for_metals: true
+        is_metal: true
         is_wastewater: true
       - name: off_site_solidification_stabilization
         management_type: Treatment
       - name: off_site_wastewater_treatment_excluding_potws_metals_and_metal_compounds_only
         management_type: Treatment
-        is_for_metals: true
+        is_metal: true
         is_wastewater: true
       - name: off_site_underground_injection
         management_type: Disposal
@@ -200,7 +219,7 @@ tri_files:
         is_recycling: true
       - name: off_site_metals_recovery
         management_type: Recycling
-        is_for_metals: true
+        is_metal: true
         is_recycling: true
       - name: off_site_acid_regeneration
         management_type: Recycling
@@ -234,7 +253,13 @@ tri_files:
         management_type: Treatment
         is_brokering: true
   file_3c:
+    var_name: eol_name
+    value_name: amount
+    columns_file: tri_file_3c_columns.txt
     needed_columns:
+      - name: unit_of_measure
+        is_unit_of_measure: true
+        is_general_info: true
       - name: trifid
         is_general_info: true
       - name: tri_chem_id
@@ -242,6 +267,7 @@ tri_files:
       - name: potw_registry_id
         is_general_info: true
       - name: off_site_total_potw_transfer
+        management_type: Treatment
         is_potw: true
 frs_api:
   base_url: "https://data.epa.gov/efservice"

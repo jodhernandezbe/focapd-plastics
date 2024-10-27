@@ -67,15 +67,22 @@ from omegaconf import DictConfig
 class FrsDataFetcher:
     """Class for fetching NAICS codes associated with FRS registry IDs from the EPA's FRS API."""
 
-    def __init__(self, cfg: DictConfig):
+    def __init__(
+        self,
+        cfg: DictConfig,
+        max_concurrent_requests: int = 10,
+    ):
         """Initialize the FrsDataFetcher with configuration.
 
         Args:
             cfg (DictConfig): The configuration object.
+            max_concurrent_requests (int): The maximum number of concurrent requests to make.
+                This helps to avoid problems with the server side.
 
         """
         self.cfg = cfg
         self.base_url = cfg.frs_api.base_url
+        self.semaphore = asyncio.Semaphore(max_concurrent_requests)
 
     async def _fetch_single_frs_data(
         self,
@@ -102,14 +109,15 @@ class FrsDataFetcher:
         full_url = f"{self.base_url}/{endpoint}/{join_endpoint}/{primary_filter}"
 
         # Make the request using the shared session
-        async with session.get(full_url) as response:
-            if response.status == 200:
-                data = await response.json()
-                naics_code = data[0].get("naics_code") if data else None
-                return {"registry_id": frs_registry_id, "naics_code": naics_code}
-            else:
-                print(f"Failed to fetch data for {frs_registry_id}: {response.status}")
-                return {"registry_id": frs_registry_id, "naics_code": None}
+        async with self.semaphore:
+            async with session.get(full_url) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    naics_code = data[0].get("naics_code") if data else None
+                    return {"registry_id": frs_registry_id, "naics_code": naics_code}
+                else:
+                    print(f"Failed to fetch data for {frs_registry_id}: {response.status}")
+                    return {"registry_id": frs_registry_id, "naics_code": None}
 
     async def _fetch_all_frs_data(self, registry_ids: List[str]) -> List[Dict[str, Optional[str]]]:
         """Fetch data for multiple registry IDs asynchronously using a shared session.

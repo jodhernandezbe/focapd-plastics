@@ -59,6 +59,7 @@ Notes:
 
 import asyncio
 import os
+from functools import lru_cache
 from typing import Dict, List, Optional
 
 import aiohttp
@@ -68,21 +69,34 @@ from omegaconf import DictConfig
 
 
 class NaicsDataFetcher:
-    """Class for fetching NAICS code descriptions from the Census API."""
+    """Singleton class for fetching NAICS code descriptions from the Census API with caching."""
+
+    _instance = None  # Singleton instance
+
+    def __new__(cls, *args, **kwargs):
+        """Ensure only a single instance of NaicsDataFetcher is created."""
+        if not cls._instance:
+            cls._instance = super(NaicsDataFetcher, cls).__new__(cls)
+        return cls._instance
 
     def __init__(
         self,
         cfg: DictConfig,
+        max_concurrent_requests: int = 10,
     ):
         """Initialize the NaicsDataFetcher with configuration and API key.
 
         Args:
             cfg (DictConfig): The configuration object.
+            max_concurrent_requests (int): The maximum number of concurrent requests.
 
         """
-        self.cfg = cfg
-        self.census_api_key = self._load_api_key()
-        self.base_url = f"{cfg.census_api.base_url}/{cfg.census_api.year}/{cfg.census_api.dataset}"
+        if not hasattr(self, "_initialized"):  # Avoid re-initialization in singleton
+            self.cfg = cfg
+            self.census_api_key = self._load_api_key()
+            self.base_url = f"{cfg.census_api.base_url}/{cfg.census_api.year}/{cfg.census_api.dataset}"
+            self.semaphore = asyncio.Semaphore(max_concurrent_requests)
+            self._initialized = True
 
     def _load_api_key(self) -> str:
         """Load the Census API key from the .env file.
@@ -103,6 +117,7 @@ class NaicsDataFetcher:
             )
         return api_key
 
+    @lru_cache(maxsize=100)
     async def _fetch_single_naics_data(
         self,
         naics_code: str,
@@ -124,14 +139,15 @@ class NaicsDataFetcher:
             f"&{self.cfg.census_api.parameters['naics_code'].format(naics_code=naics_code)}"
             f"&key={self.census_api_key}"
         )
-        async with session.get(full_url) as response:
-            if response.status == 200:
-                data = await response.json()
-                naics_title = data[1][0] if len(data) > 1 else None
-                return {"naics_code": naics_code, "naics_title": naics_title}
-            else:
-                print(f"Failed to fetch data for NAICS code {naics_code}: {response.status}")
-                return {"naics_code": naics_code, "naics_title": None}
+        async with self.semaphore:
+            async with session.get(full_url) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    naics_title = data[1][0] if len(data) > 1 else None
+                    return {"naics_code": naics_code, "naics_title": naics_title}
+                else:
+                    print(f"Failed to fetch data for NAICS code {naics_code}: {response.status}")
+                    return {"naics_code": naics_code, "naics_title": None}
 
     async def _fetch_all_naics_data(
         self,

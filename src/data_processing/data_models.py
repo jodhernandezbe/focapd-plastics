@@ -253,7 +253,7 @@ class Record(Base):
         ForeignKey("additive.id"),
         nullable=False,
     )
-    industry_sector_id = Column(
+    waste_generator_industry_sector_id = Column(
         Integer,
         ForeignKey("industry_sector.id"),
         nullable=False,
@@ -272,13 +272,18 @@ class Record(Base):
         ForeignKey("release_type.id"),
         nullable=True,
     )
+    waste_handler_industry_sector_id = Column(
+        Integer,
+        ForeignKey("industry_sector.id"),
+        nullable=True,
+    )
 
     # Relationships
     additive = relationship(
         "Additive",
         backref="records",
     )
-    industry_sector = relationship(
+    waste_generator_industry_sector = relationship(
         "IndustrySector",
         backref="records",
     )
@@ -293,6 +298,10 @@ class Record(Base):
     chemical_activities = relationship(
         "ChemicalActivity",
         secondary=record_chemical_activity,
+        backref="records",
+    )
+    waste_handler_industry_sector = relationship(
+        "IndustrySector",
         backref="records",
     )
 

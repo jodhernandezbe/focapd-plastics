@@ -12,6 +12,13 @@ industry sectors, plastic additives, TRI (Toxics Release Inventory) files,
 and specific columns with associated attributes.
 
 Classes:
+    FrsQueryParameters: Represents query parameters for the FRS API, including
+        registry_id_equals, primary_indicator_equals, join_type, format, and
+        first_last.
+    FrsEndpoints: Represents FRS API endpoints for facility_site, interest, and
+        naics.
+    FrsApiConfig: Encapsulates the FRS API configuration, including the base URL,
+        endpoints, and query parameters.
     IndustrySector: Represents details about plastic-related industry sectors,
         including a description and NAICS codes.
     PlasticAdditives: Represents details about plastic additives, including a
@@ -34,7 +41,36 @@ efficiently, enabling clear validation and organized access to configuration dat
 
 
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Dict, List, Optional
+
+
+@dataclass
+class FrsQueryParameters:
+    """Query Parameters."""
+
+    registry_id_equals: str
+    primary_indicator_equals: str
+    join_type: str
+    format: str
+    first_last: str
+
+
+@dataclass
+class FrsEndpoints:
+    """FRS Endpoints."""
+
+    frs_facility_site: str
+    frs_interest: str
+    frs_naics: str
+
+
+@dataclass
+class FrsApiConfig:
+    """FRS API Configuration."""
+
+    base_url: str
+    endpoints: FrsEndpoints
+    query_parameters: FrsQueryParameters
 
 
 @dataclass
@@ -94,3 +130,4 @@ class MainConfig:
     industry_sectors: IndustrySector
     plastics_additives: PlasticAdditive
     tri_files: TriFiles
+    frs_api: FrsApiConfig

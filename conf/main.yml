@@ -219,3 +219,15 @@ tri_files:
       - name: potw_registry_id
       - name: off_site_total_potw_transfer
         is_potw: true
+frs_api:
+  base_url: "https://data.epa.gov/efservice"
+  endpoints:
+    frs_facility_site: "frs.frs_facility_site"
+    frs_interest: "frs.frs_interest"
+    frs_naics: "frs.frs_naics"
+  query_parameters:
+    registry_id_equals: "registry_id/equals/{frs_registry_id}"
+    primary_indicator_equals: "primary_indicator/equals/PRIMARY"
+    join_type: "left"
+    format: "JSON"
+    first_last: "1:1"

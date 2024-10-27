@@ -50,7 +50,7 @@ def create_database() -> sessionmaker:
         current_dir,
         "data",
         "processed",
-        "tri_additives.sqlite",
+        "tri_eol_additives.sqlite",
     )
     DATABASE_URL = f"sqlite:///{db_path}"
 

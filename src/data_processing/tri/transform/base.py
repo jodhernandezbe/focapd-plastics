@@ -504,7 +504,6 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
         management_columns = []
 
         relevant_keys = [
-            "management_type",
             "is_hazardous_waste",
             "is_landfilling",
             "is_recycling",
@@ -519,7 +518,7 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
             if "management_type" in column:
                 formatted_column = {
                     "column_name": self._normalize_column_name(column.name),
-                    "management_type": column.get("management_type", ""),
+                    "management_type": column["management_type"],
                 }
 
                 for key in relevant_keys:

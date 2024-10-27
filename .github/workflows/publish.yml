@@ -26,7 +26,11 @@ jobs:
     - name: Build package
       run: poetry build
 
+    - name: Verify PYPI_API_TOKEN Environment Variable
+      run: echo "POETRY_PYPI_TOKEN is set"
+      if: env.POETRY_PYPI_TOKEN != ''
+
     - name: Publish to PyPI
       env:
         POETRY_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-      run: poetry publish --build
+      run: poetry publish --build -vvv

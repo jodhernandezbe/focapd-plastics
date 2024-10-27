@@ -127,7 +127,7 @@ Feel free to use asyncronous queries to reduce the processing time.
 
 ### Testing
 
-Feel free to use unit or integration testing for QA. As suggestion, include it as a hook in the pre-commit file. Only smoke testing were used in the development of this project and there is not coverage yet.
+Feel free to use unit or integration testing for QA. As suggestion, include it as a hook in the pre-commit file. Only smoke testing was used in the development of this project and there is not coverage yet.
 
 ### Data orchestator
 

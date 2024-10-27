@@ -23,7 +23,7 @@ tri_files:
       - name: tri_chem_id
         is_general_info: true
       - name: unit_of_measure
-        is_unit_of_measure: true    # Just in case that the name changed
+        is_unit_of_measure: true    # Just in case that the name changes
       - name: on_site_fugitive_air_emissions
         relase_type: Fugitive air release
       - name: on_site_stack_air_emissions

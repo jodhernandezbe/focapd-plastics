@@ -159,4 +159,8 @@ class TriDataHelper:
         Returns:
             pd.DataFrame: The unpivoted DataFrame in long format.
         """
-        return pd.melt(df, id_vars=id_vars, value_vars=value_vars, var_name=var_name, value_name=value_name)
+        return pd.melt(df,
+                       id_vars=id_vars,
+                       value_vars=value_vars,
+                       var_name=var_name,
+                       value_name=value_name,)

@@ -306,4 +306,4 @@ class Record(Base):
     )
 
     def __repr__(self):
-        return f"<Record(amount={self.amount}, additive_id={self.additive_id}, industry_sector_id={self.industry_sector_id})>"
+        return f"<Record(amount={self.amount}, additive_id={self.additive_id})>"

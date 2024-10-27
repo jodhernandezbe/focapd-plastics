@@ -70,7 +70,7 @@ If you are running the above command or committing your changes, and one or more
 
 ### Installing pyright language server for IDE typecheck highlighting
 
-Detailed instructions: https://microsoft.github.io/pyright/#/installation
+Detailed instructions: [pyright](https://microsoft.github.io/pyright/#/installation)
 
 [Pycharm](https://github.com/InSyncWithFoo/pyright-langserver-for-pycharm)
 
@@ -90,9 +90,45 @@ The project follows the Google style to document the code. The pre-commit hooks 
 
 ## Census Bureau Data:
 
-Get your API key in: https://api.census.gov/data/key_signup.html
+Get your API key in: [link](https://api.census.gov/data/key_signup.html)
+
+Once you get your API key, include a ```.env``` file in the project root with the following:
+
+```
+CENSUS_DATA_API_KEY=<YOUR-CENSUS-DATA-API-KEY>
+```
+
+Replace ```<YOUR-CENSUS-DATA-API-KEY>``` with your actual API key.
+
+For more information regarding the API data: [link](https://www.census.gov/data/developers/guidance/api-user-guide.Example_API_Queries.html)
 
 
 ## U.S. EPA's Envirofacts
 
-API documentation: https://www.epa.gov/enviro/envirofacts-data-service-api-v1
+API documentation: [link](https://www.epa.gov/enviro/envirofacts-data-service-api-v1)
+
+## TODO
+
+### TRI data retrieval
+
+The TRI data is static and not dynamic. Due to file size and scalability feel free to automatize this process.
+Suggestions:
+
+1. Implement TRI data retrieval from EPA's Envirofacts API.
+2. Implement the web scrapping strategy like in [EoL4Chem](https://github.com/jodhernandezbe/EoL4Chem) repository.
+
+Feel free to modularize more the project tree for scalability and mantainability.
+
+### SQL database engine
+
+If you will modify the db engine (e.g., PostgreSQL) or name, feel free to include this information in the config file instead of hard coding it since it would be less error prone.
+
+Feel free to use asyncronous queries to reduce the processing time.
+
+### Testing
+
+Feel free to use unit or integration testing for QA. As suggestion, include it as a hook in the pre-commit file. Only smoke testing were used in the development of this project and there is not coverage yet.
+
+### Data orchestator
+
+Feel free to use a data orchestator like Airflow or Prefect. This would be more important if you try to increase the data volume.

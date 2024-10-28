@@ -35,6 +35,13 @@ jobs:
         with:
           poetry-version: ${{ matrix.poetry-version }}
       
+      - name: Bump version
+        run: poetry version patch
+
+      - name: Get New Version
+        id: new_version
+        run: echo "NEW_VERSION=$(poetry version -s)" >> $GITHUB_ENV
+
       - name: Publish
         env:
           PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}

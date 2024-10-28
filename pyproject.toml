@@ -7,6 +7,8 @@ readme = "README.md"
 packages = [
     { include = "src" }
 ]
+exclude = ["ancillary", "data/raw"]
+
 
 [project.urls]
 "Homepage" = "https://github.com/jodhernandezbe/focapd-plastics"

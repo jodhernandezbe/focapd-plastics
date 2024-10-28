@@ -26,6 +26,16 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up Cache Key to Avoid Stale Data
+        id: cache_key
+        run: echo "::set-output name=key::$(date +'%s')"
+
+      - name: Cache Poetry Dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-cache-${{ steps.cache_key.outputs.key }}
+
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python - -y

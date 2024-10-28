@@ -178,3 +178,7 @@ Feel free to use a data orchestator like Airflow or Prefect. This would be more 
 ### Note
 
 The project structure follows a modular approach to facilitate the expansion and mantainability. In addition, it follows a single responsability principle and separation of concern. Keep this principle as part of good practices and clean code.
+
+### PYPI
+
+[PYPY](https://pypi.org/project/focapd/)

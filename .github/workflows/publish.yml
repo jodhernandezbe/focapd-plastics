@@ -1,30 +1,46 @@
 name: Release
+
 on:
-  release:
-    types:
-      - created
+  push:
+    tags:
+      - '*.*.*'
+
+permissions:
+  contents: read
 
 jobs:
-  publish:
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.12]
-        poetry-version: [1.8.4]
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+  pypi-publish:
+    name: Upload release to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/blurry-cli/
+    permissions:
+      id-token: write
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Run image
-        uses: abatilo/actions-poetry@v2.0.0
-        with:
-          poetry-version: ${{ matrix.poetry-version }}
-      - name: Publish
-        env:
-          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+          python-version: "3.12"
+
+      - name: Install Poetry
         run: |
-          poetry config pypi-token.pypi $PYPI_API_TOKEN
-          poetry publish --build
+          curl -sSL https://install.python-poetry.org | python - -y
+
+      - name: Update PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Update Poetry configuration
+        run: poetry config virtualenvs.create false
+
+      - name: Install dependencies
+        run: poetry install --sync --no-interaction
+
+      - name: Pass token
+        run: poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Package project
+        run: poetry publish --build

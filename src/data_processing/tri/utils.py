@@ -132,13 +132,12 @@ class TriDataHelper:
                 header=None,
                 encoding="ISO-8859-1",
                 low_memory=False,
-                skiprows=[0],
                 lineterminator="\n",
                 quotechar='"',
-                names=column_names,
                 on_bad_lines="skip",
-                usecols=used_cols if used_cols else column_names,
+                usecols=range(len(column_names)),
             )
+            df.columns = column_names
             return df
         except FileNotFoundError:
             raise FileNotFoundError(f"File not found: {file_path}")
@@ -159,8 +158,10 @@ class TriDataHelper:
         Returns:
             pd.DataFrame: The unpivoted DataFrame in long format.
         """
-        return pd.melt(df,
-                       id_vars=id_vars,
-                       value_vars=value_vars,
-                       var_name=var_name,
-                       value_name=value_name,)
+        return pd.melt(
+            df,
+            id_vars=id_vars,
+            value_vars=value_vars,
+            var_name=var_name,
+            value_name=value_name,
+        )

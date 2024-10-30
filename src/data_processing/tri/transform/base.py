@@ -125,6 +125,7 @@ class TriFileBaseTransformer:
 
         """
         plastic_additives = [chem["CASRN"] for chem in self.config.plastic_additives.tri_chem_id]
+        self._organize_tri_chem_id()
         return self.data.loc[self.data.tri_chem_id.isin(plastic_additives)]
 
     def _organize_tri_chem_id(self):

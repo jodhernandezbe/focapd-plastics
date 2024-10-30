@@ -118,7 +118,12 @@ class TriFile1bTransformer(TriFileBaseTransformer):
         self.data = self.filter_desired_chemicals()
         self.data = self.prepare_unpivot_columns()
         self.data[self.naics_code_column] = self.data[self.naics_code_column].fillna(0).astype(int).astype(str)
+        self.data["is_performed"] = self.data["is_performed"].fillna("No")
         self.data = self.aggregate_yes_no()
+
+        if self.data.empty:
+            raise ValueError("The data is empty after processing. Please check the configuration settings and the input data.")
+
         self.look_for_facility_naics_code()
 
 
@@ -134,3 +139,4 @@ if __name__ == "__main__":
         cfg = hydra.compose(config_name="main")
         transformer = TriFile1bTransformer("US_1b_2022.txt", cfg)
         transformer.process()
+        print(transformer.data.head())

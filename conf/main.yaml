@@ -445,10 +445,12 @@ frs_api:
     first_last: "1:1"
 census_api:
   base_url: "https://api.census.gov/data"
-  year: "2019"
-  dataset: "cbp"
+  dataset: "timeseries/intltrade/exports/naics"
   parameters:
-    get: "NAICS2017_LABEL"
-    for_: "us:*"
-    naics_code: "NAICS2017={naics_code}"
+    get:
+      - "NAICS_SDESC"
+      - "time={time}"
+    naics_code: "NAICS={naics_code}"
     key: "{census_api_key}"
+usspending_api:
+  base_url: https://api.usaspending.gov/api/v2/references/naics/{naics_code}/

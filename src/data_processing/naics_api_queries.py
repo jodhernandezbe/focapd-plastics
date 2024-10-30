@@ -59,8 +59,9 @@ Notes:
 
 import asyncio
 import os
+from datetime import datetime
 from functools import lru_cache
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 import aiohttp
 import pandas as pd
@@ -94,8 +95,9 @@ class NaicsDataFetcher:
         if not hasattr(self, "_initialized"):  # Avoid re-initialization in singleton
             self.cfg = cfg
             self.census_api_key = self._load_api_key()
-            self.base_url = f"{cfg.census_api.base_url}/{cfg.census_api.year}/{cfg.census_api.dataset}"
+            self.base_url = f"{cfg.census_api.base_url}/{cfg.census_api.dataset}"
             self.semaphore = asyncio.Semaphore(max_concurrent_requests)
+            self.time = f"{datetime.now().year}-01"
             self._initialized = True
 
     def _load_api_key(self) -> str:
@@ -117,6 +119,30 @@ class NaicsDataFetcher:
             )
         return api_key
 
+    async def _fetch_from_auxiliar_endpoint(
+        self,
+        naics_code: str,
+        session: aiohttp.ClientSession,
+    ) -> Union[str, None]:
+        """Get the auxiliar endpoint for the Census API.
+
+        Args:
+            naics_code (str): The NAICS code to fetch data for.
+            session (aiohttp.ClientSession): The shared aiohttp session.
+
+        Returns:
+            str: The auxiliar endpoint for the Census API.
+
+        """
+        query_url = self.cfg.usspending_api.base_url.format(naics_code=naics_code)
+        async with session.get(query_url) as response:
+            if response.status == 200:
+                data = await response.json()
+                return data["results"][0]["naics_description"].capitalize()
+            else:
+                print(f"Failed to fetch data for NAICS code {naics_code}: {response.status}")
+                return None
+
     @lru_cache(maxsize=100)
     async def _fetch_single_naics_data(
         self,
@@ -134,8 +160,7 @@ class NaicsDataFetcher:
         """
         full_url = (
             f"{self.base_url}"
-            f"?get={self.cfg.census_api.parameters['get']}"
-            f"&for={self.cfg.census_api.parameters['for_']}"
+            f"?get={"&".join(self.cfg.census_api.parameters['get']).format(time=self.time)}"
             f"&{self.cfg.census_api.parameters['naics_code'].format(naics_code=naics_code)}"
             f"&key={self.census_api_key}"
         )
@@ -143,11 +168,19 @@ class NaicsDataFetcher:
             async with session.get(full_url) as response:
                 if response.status == 200:
                     data = await response.json()
-                    naics_title = data[1][0] if len(data) > 1 else None
+                    naics_title = data[1][0].capitalize() if len(data) > 1 else None
+                    if naics_title is None:
+                        naics_title = await self._fetch_from_auxiliar_endpoint(
+                            naics_code,
+                            session,
+                        )
                     return {"naics_code": naics_code, "naics_title": naics_title}
                 else:
-                    print(f"Failed to fetch data for NAICS code {naics_code}: {response.status}")
-                    return {"naics_code": naics_code, "naics_title": None}
+                    naics_title = await self._fetch_from_auxiliar_endpoint(
+                        naics_code,
+                        session,
+                    )
+                    return {"naics_code": naics_code, "naics_title": naics_title}
 
     async def _fetch_all_naics_data(
         self,
@@ -195,7 +228,7 @@ if __name__ == "__main__":
         job_name="smoke-testing-census",
     ):
         cfg = hydra.compose(config_name="main")
-        df = pd.DataFrame({"naics_code": ["481112"]})
+        df = pd.DataFrame({"naics_code": ["322120", "335139", "325991"]})
         try:
             fetcher = NaicsDataFetcher(cfg)
             result_df = fetcher.process_naics_codes(df, "naics_code")

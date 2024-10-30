@@ -113,6 +113,7 @@ class TriFile3aTransformer(TriFileNumericalTransformer):
         """Process the TRI data file."""
         needed_columns = self._get_needed_columns()
         self.data = self.select_columns(needed_columns)
+        self.data = self.filter_desired_chemicals()
         self.fill_missing_values()
         self.data = self.prepare_unpivot_columns()
         self.to_kilogram()

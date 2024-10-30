@@ -9,15 +9,177 @@ hydra:
     dir: .
 industry_sectors:
   description: Plastic related industry sectors based on NAICS codes.
+  source: https://ordspub.epa.gov/ords/guideme_ext/f?p=guideme:gd:::::gd:naics_codes
   naics_code:
-    -
+    - code: "325211"
+      name: Plastics Material and Resin Manufacturing
+      description: Facilities that manufacture synthetic resins and plastics materials, crucial for plastic production.
+    - code: "325991"
+      name: Custom Compounding of Purchased Resins
+      description: Facilities involved in custom compounding or mixing of resins to create specialized plastic formulations.
+    - code: "326111"
+      name: Plastics Bag and Pouch Manufacturing
+      description: Facilities that manufacture plastic bags and pouches, commonly used in packaging and consumer goods.
+    - code: "326112"
+      name: Plastics Packaging Film and Sheet (including Laminated) Manufacturing
+      description: Facilities that produce plastic film and sheet used for various packaging applications.
+    - code: "326113"
+      name: Unlaminated Plastics Film and Sheet (except Packaging) Manufacturing
+      description: Facilities manufacturing unlaminated plastic film and sheet primarily for non-packaging applications.
+    - code: "326121"
+      name: Unlaminated Plastics Profile Shape Manufacturing
+      description: Facilities focused on producing plastic profile shapes used in construction, consumer products, and industry.
+    - code: "326122"
+      name: Plastics Pipe and Pipe Fitting Manufacturing
+      description: Facilities that manufacture plastic pipes and fittings for various infrastructure and construction applications.
+    - code: "326130"
+      name: Laminated Plastics Plate, Sheet (except Packaging), and Shape Manufacturing
+      description: Facilities that produce laminated plastic plates, sheets, and shapes primarily for non-packaging uses.
+    - code: "326140"
+      name: Polystyrene Foam Product Manufacturing
+      description: Facilities that manufacture polystyrene foam products, widely used in insulation, packaging, and disposables.
+    - code: "326150"
+      name: Urethane and Other Foam Product (except Polystyrene) Manufacturing
+      description: Facilities involved in the production of urethane and other types of foam products, commonly used in furniture and construction.
+    - code: "326160"
+      name: Plastics Bottle Manufacturing
+      description: Facilities that manufacture plastic bottles used in the beverage, food, and personal care industries.
+    - code: "326191"
+      name: Plastics Plumbing Fixture Manufacturing
+      description: Facilities focused on manufacturing plastic plumbing fixtures, such as sinks, bathtubs, and showers.
+    - code: "326199"
+      name: All Other Plastics Product Manufacturing
+      description: Facilities involved in the production of various other plastic products not classified elsewhere.
+    - code: "326140"
+      name: Polystyrene Foam Product Manufacturing
+      description: Facilities that manufacture polystyrene foam products, widely used in insulation, packaging, and disposables.
+    - code: "326150"
+      name: Urethane and Other Foam Product (except Polystyrene) Manufacturing
+      description: Facilities involved in the production of urethane and other foam products, commonly used in furniture and construction.
+    - code: "326211"
+      name: Tire Manufacturing (except Retreading)
+      description: Facilities that manufacture tires, which often involve the use of plastics and rubber compounds.
+    - code: "326212"
+      name: Tire Retreading (except facilities previously classified under SIC 7534, Tire Retreading and Repair Shops)
+      description: Facilities that retread tires, a process involving rubber and plastic materials.
+    - code: "326220"
+      name: Rubber and Plastics Hoses and Belting Manufacturing
+      description: Facilities that manufacture hoses and belting from rubber and plastics, commonly used in industrial applications.
+    - code: "326291"
+      name: Rubber Product Manufacturing for Mechanical Use
+      description: Facilities focused on producing rubber products for mechanical purposes, often integrated with plastics.
+    - code: "326299"
+      name: All Other Rubber Product Manufacturing
+      description: Facilities producing miscellaneous rubber products, many of which support plastic manufacturing processes or products.
 plastics_additives:
   description: Plastic additives based on TRI reporting.
+  source: https://comptox.epa.gov/dashboard/search-results?input_type=puc&inputs=plastic_additive
   tri_chem_id:
-    - "0007440666"
-    - "0007664393"
-    - "0000108883"
-potw_naics_code: "221320"
+    - CASRN: '79107'
+      name: 'Acrylic acid'
+    - CASRN: '107131'
+      name: 'Acrylonitrile'
+    - CASRN: '1344281'
+      name: 'Alumina'
+    - CASRN: '7664417'
+      name: 'Ammonia'
+    - CASRN: '120127'
+      name: 'Anthracene'
+    - CASRN: '191242'
+      name: 'Benzo[g,h,i]perylene'
+    - CASRN: '94360'
+      name: 'Benzoyl peroxide'
+    - CASRN: '3296900'
+      name: 'Pentaerythritol dibromide'
+    - CASRN: '7637072'
+      name: 'Boron trifluoride'
+    - CASRN: '106990'
+      name: '1,3-Butadiene'
+    - CASRN: '141322'
+      name: 'Butyl acrylate'
+    - CASRN: '7782505'
+      name: 'Chlorine'
+    - CASRN: '108907'
+      name: 'Chlorobenzene'
+    - CASRN: '126998'
+      name: 'Chloroprene'
+    - CASRN: '1163195'
+      name: "2,2',3,3',4,4',5,5',6,6'-Decabromodiphenyl ether"
+    - CASRN: '84742'
+      name: 'Dibutyl 1,2-benzenedicarboxylate'
+    - CASRN: '77736'
+      name: 'Dicyclopentadiene'
+    - CASRN: '117817'
+      name: 'Di(2-ethylhexyl) phthalate'
+    - CASRN: '122394'
+      name: 'Diphenylamine'
+    - CASRN: '106898'
+      name: 'Epichlorohydrin'
+    - CASRN: '74851'
+      name: 'Ethylene'
+    - CASRN: '107211'
+      name: 'Ethylene glycol'
+    - CASRN: '151564'
+      name: 'Ethyleneimine'
+    - CASRN: '75218'
+      name: 'Ethylene oxide'
+    - CASRN: '96457'
+      name: '4,5-Dihydro-2-mercaptoimidazole'
+    - CASRN: '50000'
+      name: 'Formaldehyde'
+    - CASRN: '64186'
+      name: 'Formic acid'
+    - CASRN: '7647010'
+      name: 'Hydrochloric acid'
+    - CASRN: '123319'
+      name: 'Hydroquinone'
+    - CASRN: '78795'
+      name: 'Isoprene'
+    - CASRN: '67630'
+      name: 'Isopropanol'
+    - CASRN: '80057'
+      name: 'Bisphenol A'
+    - CASRN: '108316'
+      name: '2,5-Furandione'
+    - CASRN: '149304'
+      name: '2-Mercaptobenzothiazole'
+    - CASRN: '67561'
+      name: 'Methanol'
+    - CASRN: '96333'
+      name: 'Methyl acrylate'
+    - CASRN: '80626'
+      name: 'Methyl methacrylate'
+    - CASRN: '872504'
+      name: 'N-Methyl-2-pyrrolidone'
+    - CASRN: '108452'
+      name: '1,3-Benzenediamine'
+    - CASRN: '85449'
+      name: 'Phthalic anhydride'
+    - CASRN: '115071'
+      name: '1-Propene'
+    - CASRN: '75569'
+      name: '(+/-)-1,2-Propylene oxide'
+    - CASRN: '100425'
+      name: 'Styrene'
+    - CASRN: '7664939'
+      name: 'Sulfuric acid'
+    - CASRN: '79947'
+      name: "3,3',5,5'-Tetrabromobisphenol A"
+    - CASRN: '116143'
+      name: 'Tetrafluoroethylene'
+    - CASRN: '137268'
+      name: 'Bis(dimethylaminothiocarbonyl) disulfide'
+    - CASRN: '7550450'
+      name: 'Titanium tetrachloride'
+    - CASRN: '121448'
+      name: 'Triethylamine'
+    - CASRN: '108054'
+      name: 'Vinyl acetate'
+    - CASRN: '75014'
+      name: 'Vinyl chloride'
+    - CASRN: '75354'
+      name: '1,1-Dichloroethylene'
+potw_naics_code: "221320"   # Sewage Treatment Facilities
 tri_files:
   columns_folder: ancillary
   file_1a:

@@ -115,9 +115,11 @@ class TriFile1bTransformer(TriFileBaseTransformer):
         """Process the TRI data file."""
         needed_columns = self._get_needed_columns()
         self.data = self.select_columns(needed_columns)
+        self.data = self.filter_desired_chemicals()
         self.data = self.prepare_unpivot_columns()
         self.data[self.naics_code_column] = self.data[self.naics_code_column].fillna(0).astype(int).astype(str)
         self.data = self.aggregate_yes_no()
+        self.look_for_facility_naics_code()
 
 
 if __name__ == "__main__":

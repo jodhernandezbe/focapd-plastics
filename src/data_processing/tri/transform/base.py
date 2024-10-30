@@ -124,8 +124,11 @@ class TriFileBaseTransformer:
             pd.DataFrame: The filtered data.
 
         """
-        plastics_additives = self.config.plastics_additives.tri_chem_id
+        plastics_additives = [chem["CASRN"] for chem in self.config.plastics_additives.tri_chem_id]
         return self.data.loc[self.data.tri_chem_id.isin(plastics_additives)]
+
+    def _organize_tri_chem_id(self):
+        self.data.tri_chem_id = self.data.tri_chem_id.str.replace("-", "").str.lstrip("0")
 
     def _get_path_to_columns(self) -> str:
         """Get the path to the columns file.
@@ -173,7 +176,7 @@ class TriFileBaseTransformer:
             missing = set(columns) - set(existing_columns)
             print(f"Warning: These columns were not found in the DataFrame and will be ignored: {missing}")
 
-        return self.data[existing_columns]
+        return self.data[existing_columns]  # type: ignore [reportReturnType]
 
     def fill_missing_values(self):
         """Fill null values in columns with 'relase_type' or 'management_type' to 0.0."""
@@ -380,11 +383,11 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
         var_name = self.var_and_value_names["var_name"]
 
         # Filter data based on release and management columns
-        df_releases = self.data[self.data[var_name].isin(self.release_columns)]
+        df_releases = self.data[self.data[var_name].isin(self.release_columns)]  # type: ignore [reportAttributeAccessIssue]
 
-        df_management = self.data.loc[self.data[var_name].isin(self.management_columns)]
+        df_management = self.data.loc[self.data[var_name].isin(self.management_columns)]  # type: ignore [reportAttributeAccessIssue]
 
-        return df_releases, df_management
+        return df_releases, df_management  # type: ignore [reportReturnType]
 
     def organize_resealse_dataframe(self, df_releases: pd.DataFrame) -> pd.DataFrame:
         """Organize the releases DataFrame by mapping release types and formatting column names.
@@ -427,7 +430,7 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
 
         """
         df_releases.loc[:, self.var_and_value_names["var_name"]] = df_releases[self.var_and_value_names["var_name"]].map(
-            self.release_type_mapping
+            self.release_type_mapping  # type: ignore [reportArgumentType]
         )
         return df_releases
 

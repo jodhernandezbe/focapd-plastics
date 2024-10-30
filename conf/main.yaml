@@ -71,7 +71,7 @@ industry_sectors:
     - code: "326299"
       name: All Other Rubber Product Manufacturing
       description: Facilities producing miscellaneous rubber products, many of which support plastic manufacturing processes or products.
-plastics_additives:
+plastic_additives:
   description: Plastic additives based on TRI reporting.
   source: https://comptox.epa.gov/dashboard/search-results?input_type=puc&inputs=plastic_additive
   tri_chem_id:

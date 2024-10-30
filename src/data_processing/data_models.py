@@ -285,7 +285,8 @@ class Record(Base):
     )
     waste_generator_industry_sector = relationship(
         "IndustrySector",
-        backref="records",
+        foreign_keys=[waste_generator_industry_sector_id],
+        backref="generator_records",
     )
     end_of_life_activity = relationship(
         "EndOfLifeActivity",
@@ -302,7 +303,8 @@ class Record(Base):
     )
     waste_handler_industry_sector = relationship(
         "IndustrySector",
-        backref="records",
+        foreign_keys=[waste_handler_industry_sector_id],
+        backref="handler_records",
     )
 
     def __repr__(self):

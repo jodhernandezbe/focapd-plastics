@@ -33,16 +33,16 @@ Example:
 import os
 
 from sqlalchemy import create_engine, inspect
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 
 from src.data_processing.data_models import Base
 
 
-def create_database() -> sessionmaker:
+def create_database() -> Session:
     """Creates a SQLite database and tables for storing TRI data.
 
     Returns:
-        sessionmaker: A sessionmaker object for connecting to the database.
+        Session: A session object for connecting to the database.
 
     """
     current_dir = os.getcwd()
@@ -66,8 +66,8 @@ def create_database() -> sessionmaker:
         Base.metadata.create_all(engine)
         print("SQLite database and tables created successfully!")
 
-    Session = sessionmaker(bind=engine)
-    return Session
+    session = sessionmaker(bind=engine)
+    return session()
 
 
 if __name__ == "__main__":

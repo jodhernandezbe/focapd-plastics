@@ -124,8 +124,8 @@ class TriFileBaseTransformer:
             pd.DataFrame: The filtered data.
 
         """
-        plastics_additives = [chem["CASRN"] for chem in self.config.plastics_additives.tri_chem_id]
-        return self.data.loc[self.data.tri_chem_id.isin(plastics_additives)]
+        plastic_additives = [chem["CASRN"] for chem in self.config.plastic_additives.tri_chem_id]
+        return self.data.loc[self.data.tri_chem_id.isin(plastic_additives)]
 
     def _organize_tri_chem_id(self):
         self.data.tri_chem_id = self.data.tri_chem_id.str.replace("-", "").str.lstrip("0")

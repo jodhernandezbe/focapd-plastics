@@ -72,7 +72,6 @@ class TriFile3cTransformer(TriFileNumericalTransformer):
         self.to_kilogram()
         self.df_management = self.aggregate_values(self.data)
         self.df_management = self.format_management_column_names(self.df_management)
-        self.df_releases = None
         self._assign_naics_to_potw()
 
 

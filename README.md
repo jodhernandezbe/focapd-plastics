@@ -181,4 +181,4 @@ The project structure follows a modular approach to facilitate the expansion and
 
 ### PYPI
 
-[PYPY](https://pypi.org/project/focapd/)
+[PYPI](https://pypi.org/project/focapd/)

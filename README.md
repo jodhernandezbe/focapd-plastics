@@ -170,7 +170,7 @@ This repository includes a data processing pipeline for handling TRI (Toxics Rel
 To run the data processing pipeline, navigate to the repository's main directory and execute the following command, replacing ```<year>``` with the desired year (e.g., 2022):
 
 ```
-python path/to/your_script.py --year <year>
+python src/data_processing/main.py --year <year>
 ```
 
 ## TODO

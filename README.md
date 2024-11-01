@@ -1,7 +1,7 @@
 
 # FOCAPD SI
 
-![Project Logo](assets/logo.webp)
+<img src="assets/logo.webp" alt="Project Logo" width="200"/>
 
 ## Overview
 

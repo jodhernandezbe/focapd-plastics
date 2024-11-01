@@ -108,7 +108,7 @@ class IndustrySector(Base):
     )
     naics_title = Column(
         String,
-        nullable=False,
+        nullable=True,
     )
 
     def __repr__(self):

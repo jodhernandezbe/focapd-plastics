@@ -3,10 +3,10 @@
 
 """Orchestration module for the TRI data processing pipeline."""
 
-import os
+from omegaconf import DictConfig
 
-from hydra import compose, initialize_config_dir
-
+from src.data_processing.create_sqlite_db import create_database
+from src.data_processing.tri.load.load import TriDataLoader
 from src.data_processing.tri.transform.file_1a import TriFile1aTransformer
 from src.data_processing.tri.transform.file_1b import TriFile1bTransformer
 from src.data_processing.tri.transform.file_3a import TriFile3aTransformer
@@ -16,55 +16,79 @@ from src.data_processing.tri.transform.file_3c import TriFile3cTransformer
 class TriOrchestator:
     """Class for orchestrating the transformation of TRI data files."""
 
-    def __init__(self, year: int):
+    def __init__(
+        self,
+        year: int,
+        config: DictConfig,
+    ):
         self.year = year
+        self.config = config
+        self.session = create_database()
+        self.tri_db_loader = TriDataLoader(
+            config=self.config,
+            session=self.session,
+        )
         self._generic_file_name = "US_{file_type}_{year}.txt"
-        self._initialize_config()
 
-    def _initialize_config(self):
-        config_dir: str = "../../../../conf"
-        job_name: str = "tri-processing"
-        initialize_config_dir(config_dir=os.path.abspath(config_dir), job_name=job_name)
-        self.config = compose(config_name="main")
-
-    def process(self):
-        """Process the TRI data files."""
-        transformer_1b = TriFile1bTransformer(
+    def process_file(self, file_type, transformer_class):
+        """Helper method to process a TRI data file based on file type."""
+        transformer = transformer_class(
             self._generic_file_name.format(
-                file_type="1b",
+                file_type=file_type,
                 year=self.year,
             ),
             self.config,
         )
-        transformer_1b.process()
+        transformer.process()
+        return transformer
 
-        transformer_1a = TriFile1aTransformer(
-            self._generic_file_name.format(
-                file_type="1a",
-                year=self.year,
-            ),
-            self.config,
-        )
-        transformer_1a.process()
+    def process_1b(self):
+        """Process the TRI 1B data file."""
+        return self.process_file("1b", TriFile1bTransformer)
 
-        transformer_3a = TriFile3aTransformer(
-            self._generic_file_name.format(
-                file_type="3a",
-                year=self.year,
-            ),
-            self.config,
-        )
-        transformer_3a.process()
+    def process_1a(self):
+        """Process the TRI 1A data file."""
+        return self.process_file("1a", TriFile1aTransformer)
 
-        transformer_3c = TriFile3cTransformer(
-            self._generic_file_name.format(
-                file_type="3c",
-                year=self.year,
-            ),
-            self.config,
-        )
-        transformer_3c.process()
+    def process_3a(self):
+        """Process the TRI 3A data file."""
+        return self.process_file("3a", TriFile3aTransformer)
+
+    def process_3c(self):
+        """Process the TRI 3C data file."""
+        return self.process_file("3c", TriFile3cTransformer)
 
     def run(self):
-        """Run the TRI data processing pipeline."""
-        self.process()
+        """Process the TRI data files."""
+        self.tri_db_loader.load_chemical_activity()
+        self.tri_db_loader.load_plastic_additives()
+
+        transformers = {
+            "1b": self.process_1b(),
+            "1a": self.process_1a(),
+            "3a": self.process_3a(),
+            "3c": self.process_3c(),
+        }
+
+        # Load management and release data as applicable
+        for file_type, transformer in transformers.items():
+            if file_type in ["1a", "3a", "3c"]:
+                self.tri_db_loader.load_release_management_type(
+                    transformer.management_data,
+                    "end_of_life_activity",
+                )
+            if file_type in ["1a", "3a"]:
+                self.tri_db_loader.load_release_management_type(
+                    transformer.release_data,
+                    "release_type",
+                )
+
+        self.tri_db_loader.set_1b(
+            transformers["1b"].data,
+        )
+
+        self.tri_db_loader.load_all_records(
+            transformers["1a"],
+            transformers["3a"],
+            transformers["3c"],
+        )

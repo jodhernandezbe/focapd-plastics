@@ -60,7 +60,8 @@ class TriFile3cTransformer(TriFileNumericalTransformer):
         super().__init__(file_name, "file_3c", False, config)
 
     def _assign_naics_to_potw(self):
-        self.df_management["off_site_site_naics_code"] = self.config.potw_naics_code
+        self.df_management["off_site_site_naics_code"] = self.config.potw_naics_code.naics_code
+        self.df_management["off_site_site_naics_title"] = self.config.potw_naics_code.naics_title
 
     def process(self):
         """Process the TRI data file."""
@@ -87,4 +88,4 @@ if __name__ == "__main__":
         cfg = hydra.compose(config_name="main")
         transformer = TriFile3cTransformer("US_3c_2022.txt", cfg)
         transformer.process()
-        print(transformer.df_management.head())
+        print(transformer.df_management.info())

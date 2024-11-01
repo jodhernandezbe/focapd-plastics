@@ -61,6 +61,7 @@ from omegaconf import DictConfig
 from src.data_processing.tri.utils import ConversionFactor, TriDataHelper
 
 CURRENT_DIRECTORY = os.getcwd()
+pd.set_option("future.no_silent_downcasting", True)
 
 
 class TriFileBaseTransformer:
@@ -180,21 +181,21 @@ class TriFileBaseTransformer:
         return self.data[existing_columns]  # type: ignore [reportReturnType]
 
     def fill_missing_values(self):
-        """Fill null values in columns with 'relase_type' or 'management_type' to 0.0."""
+        """Fill null values in columns with 'release_type' or 'management_type' to 0.0."""
         columns_to_fill = self._get_columns_with_attributes()
         self.data[columns_to_fill] = self.data[columns_to_fill].fillna(0.0)
 
     def _get_columns_with_attributes(self) -> List[str]:
-        """Extracts columns with 'relase_type' or 'management_type' attributes from config.
+        """Extracts columns with 'release_type' or 'management_type' attributes from config.
 
         Returns:
-            List[str]: A list of column names with 'relase_type' or 'management_type' attributes.
+            List[str]: A list of column names with 'release_type' or 'management_type' attributes.
 
         """
         return [
             column.name
             for column in self.config.tri_files[self.file_type].needed_columns
-            if "relase_type" in column or "management_type" in column
+            if "release_type" in column or "management_type" in column
         ]
 
     def _get_id_vars(self) -> List[str]:
@@ -288,6 +289,7 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
     ):
         super().__init__(file_name, file_type, config)
         self._management_data: pd.DataFrame
+        self._release_data: pd.DataFrame
         self.is_on_site = is_on_site
 
     def _get_unit_column(self) -> str:
@@ -478,9 +480,9 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
 
         for column in self.config.tri_files[self.file_type].needed_columns:
             column_name = column.name
-            if getattr(column, "relase_type", None):
+            if getattr(column, "release_type", None):
                 self.release_columns.append(column_name)
-                self.release_type_mapping[column_name] = column.relase_type
+                self.release_type_mapping[column_name] = column.release_type
             elif getattr(column, "management_type", None):
                 self.management_columns.append(column_name)
 
@@ -499,11 +501,26 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
             self._management_data = self._organize_management_dataframe()
         return self._management_data
 
+    @property
+    def release_data(self) -> pd.DataFrame:
+        """Generate a DataFrame containing release-related columns.
+
+        This property selects columns related to waste releases based on configuration
+        settings, and formats column names by replacing underscores with spaces and
+        capitalizing only the first letter.
+
+        Returns:
+            pd.DataFrame: DataFrame with selected release columns.
+        """
+        if not hasattr(self, "_release_data"):
+            self._release_data = self._organize_release_dataframe()
+        return self._release_data
+
     def _normalize_column_name(self, column_name: str) -> str:
         """Normalize column names by replacing underscores and capitalizing first letter."""
         return column_name.replace("_", " ").capitalize()
 
-    def _organize_management_dataframe(self):
+    def _organize_management_dataframe(self) -> pd.DataFrame:
         """Organize the management DataFrame by formatting column names."""
         management_columns = []
 
@@ -521,7 +538,7 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
         for column in self.config.tri_files[self.file_type].needed_columns:
             if "management_type" in column:
                 formatted_column = {
-                    "column_name": self._normalize_column_name(column.name),
+                    "name": self._normalize_column_name(column.name),
                     "management_type": column["management_type"],
                 }
 
@@ -533,4 +550,15 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
         df = pd.DataFrame(management_columns)
         df["is_on_site"] = self.is_on_site
 
+        return df
+
+    def _organize_release_dataframe(self) -> pd.DataFrame:
+        """Organize the release DataFrame by formatting column names."""
+        release_columns = []
+        for column in self.config.tri_files[self.file_type].needed_columns:
+            if "release_type" in column and column["release_type"] not in release_columns:
+                release_columns.append(column["release_type"])
+
+        df = pd.DataFrame({"name": release_columns})
+        df["is_on_site"] = self.is_on_site
         return df

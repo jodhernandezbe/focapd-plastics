@@ -179,7 +179,9 @@ plastic_additives:
       name: 'Vinyl chloride'
     - CASRN: '75354'
       name: '1,1-Dichloroethylene'
-potw_naics_code: "221320"   # Sewage Treatment Facilities
+potw_naics_code:
+  naics_code: "221320"
+  naics_title: Sewage Treatment Facilities
 tri_files:
   columns_folder: ancillary
   file_1a:
@@ -195,27 +197,27 @@ tri_files:
         is_unit_of_measure: true    # Just in case that the name changes
         is_general_info: true
       - name: on_site_fugitive_air_emissions
-        relase_type: Fugitive air release
+        release_type: Fugitive air release
       - name: on_site_stack_air_emissions
-        relase_type: Stack air release
+        release_type: Stack air release
       - name: on_site_discharges_to_stream_a
-        relase_type: On-site surface water release
+        release_type: On-site surface water release
       - name: on_site_discharges_to_stream_b
-        relase_type: On-site surface water release
+        release_type: On-site surface water release
       - name: on_site_discharges_to_stream_c
-        relase_type: On-site surface water release
+        release_type: On-site surface water release
       - name: on_site_discharges_to_stream_d
-        relase_type: On-site surface water release
+        release_type: On-site surface water release
       - name: on_site_discharges_to_stream_e
-        relase_type: On-site surface water release
+        release_type: On-site surface water release
       - name: on_site_discharges_to_stream_f
-        relase_type: On-site surface water release
+        release_type: On-site surface water release
       - name: on_site_discharges_to_stream_g
-        relase_type: On-site surface water release
+        release_type: On-site surface water release
       - name: on_site_discharges_to_stream_h
-        relase_type: On-site surface water release
+        release_type: On-site surface water release
       - name: on_site_discharges_to_stream_i
-        relase_type: On-site surface water release
+        release_type: On-site surface water release
       - name: on_site_underground_injection
         management_type: Disposal
       - name: on_site_underground_injection_to_class_i_wells
@@ -234,7 +236,7 @@ tri_files:
       - name: on_site_other_landfills
         management_type: Disposal
       - name: on_site_land_treatment_application_farming
-        relase_type: On-site soil release
+        release_type: On-site soil release
       - name: on_site_surface_impoundment
         management_type: Disposal
       - name: on_site_rcra_c_surface_impoundment
@@ -243,7 +245,7 @@ tri_files:
       - name: on_site_other_surface_impoundment
         management_type: Disposal
       - name: on_site_other_disposal
-        relase_type: On-site soil release
+        release_type: On-site soil release
         management_type: Disposal
       - name: on_site_energy_recovery
         management_type: Energy recovery
@@ -366,7 +368,7 @@ tri_files:
         management_type: Disposal
         is_landfilling: true
       - name: off_site_land_treatment
-        relase_type: Off-site soil release
+        release_type: Off-site soil release
       - name: off_site_other_land_disposal
         management_type: Disposal
       - name: off_site_other_off_site_management

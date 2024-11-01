@@ -139,4 +139,4 @@ if __name__ == "__main__":
         cfg = hydra.compose(config_name="main")
         transformer = TriFile1bTransformer("US_1b_2022.txt", cfg)
         transformer.process()
-        print(transformer.data.head())
+        print(transformer.data.info())

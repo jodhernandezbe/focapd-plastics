@@ -11,8 +11,12 @@ to handle logging, orchestration, and execution.
 
 import logging
 
+from omegaconf import DictConfig
+
 from src.data_processing.create_sqlite_db import create_database
 from src.data_processing.tri.orchestator import TriOrchestator
+
+logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 
 class PlasticAdditiveDataEngineering:
@@ -37,9 +41,14 @@ class PlasticAdditiveDataEngineering:
     def __init__(
         self,
         year: int,
+        config: DictConfig,
     ):
         self.year = year
-        self.tri_orchestator = TriOrchestator(year=year)
+        self.config = config
+        self.tri_orchestator = TriOrchestator(
+            year=year,
+            config=config,
+        )
         self._create_db_tables()
         self.setup_logging()
 
@@ -61,3 +70,16 @@ class PlasticAdditiveDataEngineering:
         self.logger.info(f"Running data processing pipeline for the year {self.year}...")
         self.tri_orchestator.run()
         self.logger.info("Data processing pipeline completed.")
+
+
+if __name__ == "__main__":
+    import hydra
+
+    with hydra.initialize(
+        version_base=None,
+        config_path="../../conf",
+        job_name="data-processings",
+    ):
+        cfg = hydra.compose(config_name="main")
+        data_engineering = PlasticAdditiveDataEngineering(year=2022, config=cfg)
+        data_engineering.run()

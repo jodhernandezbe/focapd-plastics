@@ -135,3 +135,5 @@ if __name__ == "__main__":
         cfg = hydra.compose(config_name="main")
         transformer = TriFile3aTransformer("US_3a_2022.txt", cfg)
         transformer.process()
+        print(transformer.df_management.info())
+        print(transformer.df_releases.info())

@@ -2,7 +2,7 @@
 # FOCAPD SI
 
 <div align="center">
-  <img src="assets/logo.webp" alt="Project Logo" width="500"/>
+  <img src="assets/logo.png" alt="Project Logo" width="500"/>
 </div>
 
 ## Overview

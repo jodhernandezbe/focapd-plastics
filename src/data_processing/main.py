@@ -9,6 +9,7 @@ to handle logging, orchestration, and execution.
 
 """
 
+import argparse
 import logging
 
 from omegaconf import DictConfig
@@ -75,11 +76,17 @@ class PlasticAdditiveDataEngineering:
 if __name__ == "__main__":
     import hydra
 
+    # Set up argument parsing
+    parser = argparse.ArgumentParser(description="Process TRI data for a specified year.")
+    parser.add_argument("--year", type=int, required=True, help="The year of the TRI data to be processed")
+    args = parser.parse_args()
+
+    # Initialize Hydra and compose the configuration
     with hydra.initialize(
         version_base=None,
         config_path="../../conf",
         job_name="data-processings",
     ):
         cfg = hydra.compose(config_name="main")
-        data_engineering = PlasticAdditiveDataEngineering(year=2022, config=cfg)
+        data_engineering = PlasticAdditiveDataEngineering(year=args.year, config=cfg)
         data_engineering.run()

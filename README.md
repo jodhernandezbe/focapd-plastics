@@ -1,6 +1,8 @@
 
 # FOCAPD SI
 
+![Project Logo](assets/logo.webp)
+
 ## Overview
 
 This repository contains the code to generate discrete distribution based on TRI data, as part of the FOCAPD 2024 Special Issue invitation.
@@ -24,17 +26,23 @@ This repository contains the code to generate discrete distribution based on TRI
 │       ├── US_1b_2022.txt
 │       ├── US_3a_2022.txt
 │       └── US_3c_2022.txt
-├── pyproject.toml
-└── src
+└──  src
+    ├── __init__.py
     ├── data_processing
+    │   ├── __init__.py
     │   ├── create_sqlite_db.py
     │   ├── data_models.py
     │   ├── frs_api_queries.py
     │   ├── main.py
     │   ├── naics_api_queries.py
     │   └── tri
-    │       ├── load.py
+    │       ├── __init__.py
+    │       ├── load
+    │       │   ├── __init__.py
+    │       │   └── load.py
+    │       ├── orchestator.py
     │       ├── transform
+    │       │   ├── __init__.py
     │       │   ├── base.py
     │       │   ├── file_1a.py
     │       │   ├── file_1b.py
@@ -149,6 +157,18 @@ For more information regarding the API data: [link](https://www.census.gov/data/
 
 API documentation: [link](https://www.epa.gov/enviro/envirofacts-data-service-api-v1)
 
+## Running the Data Processing Pipeline
+
+This repository includes a data processing pipeline for handling TRI (Toxics Release Inventory) data, specifically focusing on plastic additives. The pipeline can be executed by specifying the year of data you want to process.
+
+### Running the Script
+
+To run the data processing pipeline, navigate to the repository's main directory and execute the following command, replacing ```<year>``` with the desired year (e.g., 2022):
+
+```
+python path/to/your_script.py --year <year>
+```
+
 ## TODO
 
 ### TRI data retrieval
@@ -175,10 +195,10 @@ Feel free to use unit or integration testing for QA. As suggestion, include it a
 
 Feel free to use a data orchestator like Airflow or Prefect. This would be more important if you try to increase the data volume.
 
-### Note
+## Note
 
 The project structure follows a modular approach to facilitate the expansion and mantainability. In addition, it follows a single responsability principle and separation of concern. Keep this principle as part of good practices and clean code.
 
-### PYPI
+## PYPI
 
-[PYPI](https://pypi.org/project/focapd/)
+The project was released as a Python packaged in [PYPI](https://pypi.org/project/focapd/).

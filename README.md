@@ -1,7 +1,11 @@
 
 # FOCAPD SI
 
-![Project Logo](assets/logo.png)
+<div align="center">
+  <img src="https://github.com/jodhernandezbe/focapd-plastics/blob/master/assets/logo.png"
+  alt="Project Logo"
+  width="500"/>
+</div>
 
 ## Overview
 

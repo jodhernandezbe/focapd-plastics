@@ -15,32 +15,42 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      
+
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      
-      - name: Set up Unique Cache Key
-        id: cache_key
-        run: echo "::set-output name=key::$(date +'%s')"
 
       - name: Cache Poetry Dependencies
         uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry
-          key: poetry-cache-${{ steps.cache_key.outputs.key }}
+          key: poetry-cache-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            poetry-cache-${{ runner.os }}-${{ matrix.python-version }}-
 
-      - name: Run image
+      - name: Install Poetry
         uses: abatilo/actions-poetry@v2.0.0
         with:
           poetry-version: ${{ matrix.poetry-version }}
-      
-      - name: Bump version
-        run: poetry version patch
 
-      - name: Get New Version
-        id: new_version
-        run: echo "NEW_VERSION=$(poetry version -s)" >> $GITHUB_ENV
+      - name: Increment Version if Needed
+        id: version_bump
+        run: |
+          VERSION=$(poetry version -s)
+          while true; do
+            # Attempt to publish with the current version
+            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://pypi.org/project/focapd/$VERSION/)
+            if [ "$RESPONSE" = "404" ]; then
+              echo "New version is $VERSION"
+              poetry version $VERSION
+              break
+            else
+              echo "Version $VERSION already exists, incrementing..."
+              poetry version patch
+              VERSION=$(poetry version -s)
+            fi
+          done
+        shell: bash
 
       - name: Publish
         env:

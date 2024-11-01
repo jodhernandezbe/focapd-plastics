@@ -1,9 +1,7 @@
 
 # FOCAPD SI
 
-<div align="center">
-  <img src="assets/logo.png" alt="Project Logo" width="500"/>
-</div>
+![Project Logo](assets/logo.png)
 
 ## Overview
 

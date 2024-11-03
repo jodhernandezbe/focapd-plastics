@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI](https://github.com/jodhernandezbe/focapd-plastics/actions/workflows/publish.yml/badge.svg)](https://github.com/jodhernandezbe/focapd-plastics/actions/workflows/publish.yml)
 
-![Project Logo](https://imgur.com/SAMdy0S)
+![Project Logo](https://github.com/jodhernandezbe/focapd-plastics/blob/master/assets/logo.png)
 
 ## Overview
 
@@ -67,7 +67,7 @@ This repository contains the code to generate discrete distribution based on TRI
 
 ## Entity relational diagram (ERD)
 
-![Project Logo](https://imgur.com/qFB1JoK)
+![Project Logo](https://github.com/jodhernandezbe/focapd-plastics/blob/master/data/processed/erd_tri_eol_additives.png)
 
 ## Requirements
 

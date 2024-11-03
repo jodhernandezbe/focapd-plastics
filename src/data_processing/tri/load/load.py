@@ -1,16 +1,62 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/env python
 
-"""Load data into database."""
+"""Load data into the database.
 
-from typing import Callable, Dict, List, Optional, Tuple, Union
+This module defines the `TriDataLoader` class, which is responsible for loading various types
+of environmental and chemical data into a TRI (Toxics Release Inventory) database. It utilizes
+SQLAlchemy for database interactions and pandas for efficient data manipulation and bulk loading.
+
+Classes:
+    TriDataLoader: A data loader class that provides methods for loading data related to
+        chemical activities, plastic additives, release management types, and records.
+
+Methods:
+    __init__(self, config: DictConfig, session: Session): Initializes the TriDataLoader class.
+    load_chemical_activity(self): Loads chemical activities into the database.
+    load_plastic_additives(self): Loads plastic additives into the database.
+    load_release_management_type(self, df: pd.DataFrame, table_name: str): Loads release and
+        management types into the database from a DataFrame.
+    merge_with_1b(self, df_main: pd.DataFrame) -> pd.DataFrame: Merges main DataFrame with
+        filtered 1b data on 'trifid' and 'tri_chem_id'.
+    get_inserted_record_ids(self, records_df: pd.DataFrame, eol_name_list: List[str]) -> pd.DataFrame:
+        Retrieves record IDs from the database and merges them with the original DataFrame.
+    load_records(self, df: pd.DataFrame, record_type: str, handler_columns: Optional[Tuple[str, str]] = None):
+        Loads records into the Record table based on the type and enriched DataFrame.
+    _get_waste_handler_industry_sector_id(self, off_site_naics_code: Union[str, None], off_site_naics_title: Union[str, None]) -> Optional[int]:
+        Fetches or creates an IndustrySector for the waste handler and returns its ID.
+    _get_end_of_life_activity_id(self, eol_name: Union[str, None]) -> Optional[int]: Fetches
+        or creates an EndOfLifeActivity and returns its ID if record type is management.
+    _get_release_type_id(self, eol_name: Union[str, None]) -> Optional[int]: Fetches or creates
+        a ReleaseType and returns its ID if record type is release.
+    _load_record_chemical_activity(self, df: pd.DataFrame): Loads associations between records
+        and chemical activities using a DataFrame.
+    load_all_records(self, transformer_1a, transformer_3a, transformer_3c): Loads records from
+        different transformers into the Record table after merging with 1b.
+    set_1b(self, df: pd.DataFrame): Sets the 1b DataFrame for use in merging and enrichment.
+
+Usage:
+    This module can be run independently for smoke testing purposes. When executed directly,
+    it initializes the configuration using Hydra, sets up the database, and loads chemical
+    activities and plastic additives into the database.
+
+Example:
+    >>> from src.data_processing.create_sqlite_db import create_database
+    >>> session = create_database()
+    >>> loader = TriDataLoader(config, session)
+    >>> loader.load_chemical_activity()
+    >>> loader.load_plastic_additives()
+
+"""
+
+from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 from omegaconf import DictConfig
-from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
+from src.data_processing.base import BaseDataLoader
 from src.data_processing.data_models import (
     Additive,
     ChemicalActivity,
@@ -20,7 +66,7 @@ from src.data_processing.data_models import (
 )
 
 
-class TriDataLoader:
+class TriDataLoader(BaseDataLoader):
     """Class for loading data into the TRI database.
 
     Attributes:
@@ -34,36 +80,12 @@ class TriDataLoader:
         config: DictConfig,
         session: Session,
     ):
-        self.config = config
-        self.session = session
+        super().__init__(config, session)
         self.cache_additive_id: Dict[Tuple, int] = {}
         self.cache_industry_sector_id: Dict[Tuple, int] = {}
         self.cache_end_of_life_activity_id: Dict[Tuple, int] = {}
         self.cache_release_type_id: Dict[Tuple, int] = {}
         self.cache_chemical_activity_id: Dict[Tuple, int] = {}
-
-    def element_exists(self, model, **kwargs):
-        """Check if an element exists in the database."""
-        try:
-            self.session.query(model).filter_by(**kwargs).one()
-            return True
-        except NoResultFound:
-            return False
-
-    def get_or_create(self, model, **kwargs):
-        """Get an element if it exists, otherwise create it."""
-        element = self.session.query(model).filter_by(**kwargs).first()
-        if not element:
-            element = self.create_element(model, **kwargs)
-        return element
-
-    def create_element(self, model, **kwargs):
-        """Create an element in the database."""
-        element = model(**kwargs)
-        self.session.add(element)
-        self.session.commit()
-        self.session.refresh(element)
-        return element
 
     def load_chemical_activity(self):
         """Load chemical activities into the database."""
@@ -118,7 +140,7 @@ class TriDataLoader:
 
         """
         existing_names = pd.read_sql(
-            f"SELECT name FROM {table_name}",
+            text("SELECT name FROM {}".format(table_name)),
             con=self.session.get_bind(),
         )["name"].tolist()
 
@@ -149,19 +171,6 @@ class TriDataLoader:
             how="left",  # Keep all rows in the main DataFrame
         )
         return df_enriched
-
-    def _cache_get_or_create(
-        self,
-        cache: Dict[Tuple, int],
-        get_or_create_func: Callable,
-        **kwards,
-    ):
-        """Check cache for existing ID or create a new record if not found."""
-        key = tuple(kwards.items())
-        if key not in cache:
-            element = get_or_create_func(**kwards)
-            cache[key] = element if isinstance(element, int) else (element.id if element else None)  # type: ignore [reportArgumentType]
-        return cache[key]
 
     def get_inserted_record_ids(
         self,
@@ -229,7 +238,7 @@ class TriDataLoader:
         records_df["waste_generator_industry_sector_id"] = records_df.apply(
             lambda row: self._cache_get_or_create(
                 self.cache_industry_sector_id,
-                self._get_waste_generator_industry_sector_id,
+                self._get_industry_sector_id,
                 **{
                     "naics_code": row["naics_code"],
                     "naics_title": row["naics_title"],
@@ -310,32 +319,6 @@ class TriDataLoader:
         self._load_record_chemical_activity(df_activity)
 
         self.session.commit()
-
-    def _get_additive_id(
-        self,
-        tri_chem_id: str,
-    ):
-        """Fetch an Additive and return its id."""
-        additive = self.session.query(Additive).filter_by(tri_chemical_id=tri_chem_id).first()
-        if additive:
-            return additive.id
-        return None
-
-    def _get_waste_generator_industry_sector_id(
-        self,
-        naics_code: Union[str, None],
-        naics_title: Union[str, None],
-    ):
-        """Fetch or create IndustrySector for the waste generator and return its id."""
-        if naics_code and naics_title:
-            sector = self.get_or_create(
-                IndustrySector,
-                naics_code=naics_code,
-                naics_title=naics_title,
-            )
-            if sector:
-                return sector.id
-        return None
 
     def _get_waste_handler_industry_sector_id(
         self,
@@ -449,6 +432,8 @@ class TriDataLoader:
                 "off_site_naics_title",
             ),
         )
+
+        self.session.close()
 
     def set_1b(
         self,

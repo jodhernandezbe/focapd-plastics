@@ -271,26 +271,10 @@ class IndustryUseSectorNaics(Base):
         primary_key=True,
         autoincrement=True,
     )
-    naics_code_2007 = Column(
-        String,
-        nullable=False,
-    )
     industry_use_sector_id = Column(
         Integer,
         ForeignKey("industry_use_sector.id"),
         nullable=False,
-    )
-    naics_code_2012 = Column(
-        String,
-        nullable=True,
-    )
-    naics_code_2017 = Column(
-        String,
-        nullable=True,
-    )
-    naics_code_2022 = Column(
-        String,
-        nullable=True,
     )
     industry_sector_id = Column(
         Integer,
@@ -302,10 +286,8 @@ class IndustryUseSectorNaics(Base):
     industry_sector = relationship("IndustryUseSector", backref="naics_entries")
     industry_sector_ref = relationship("IndustrySector", backref="naics_links")
 
-    __table_args__ = (UniqueConstraint("naics_code_2007", name="unique_naics_code_2007"),)
-
     def __repr__(self):
-        return f"<IndustryUseSectorNaics(naics_code_2007={self.naics_code_2007}, " f"naics_code_2017={self.naics_code_2017})>"
+        return f"<IndustryUseSectorNaics(industry_use_sector_id={self.industry_use_sector_id}, industry_sector_id={self.industry_sector_id})>"
 
 
 class ChemicalActivity(Base):
@@ -542,7 +524,7 @@ class ConsumerCommercialUse(Base):
     industry_sector_id = Column(
         Integer,
         ForeignKey("industry_sector.id"),
-        nullable=False,
+        nullable=True,
     )
     product_category_id = Column(
         Integer,

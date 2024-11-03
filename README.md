@@ -15,6 +15,7 @@ This repository contains the code to generate discrete distribution based on TRI
 ```
 .
 ├── ancillary
+│   ├── cd_is_to_naics.csv
 │   ├── tri_file_1a_columns.txt
 │   ├── tri_file_1b_columns.txt
 │   ├── tri_file_3a_columns.txt
@@ -36,8 +37,14 @@ This repository contains the code to generate discrete distribution based on TRI
     │   ├── create_sqlite_db.py
     │   ├── data_models.py
     │   ├── frs_api_queries.py
+    │   ├── base.py
     │   ├── main.py
     │   ├── naics_api_queries.py
+    │   └── cdr
+    │   │   ├── __init__.py
+    │   │   ├── cleaner.py
+    │   │   ├── load.py
+    │   │   └── orchestator.py
     │   └── tri
     │       ├── __init__.py
     │       ├── load
@@ -170,10 +177,16 @@ This repository includes a data processing pipeline for handling TRI (Toxics Rel
 
 ### Running the Script
 
-To run the data processing pipeline, navigate to the repository's main directory and execute the following command, replacing ```<year>``` with the desired year (e.g., 2022):
+To run the data processing pipeline, navigate to the repository's main directory and execute the following command, replacing ```<year>``` with the desired year (e.g., 2022) and  ```<bool>``` with True/False:
 
 ```
-python src/data_processing/main.py --year <year>
+python src/data_processing/main.py --year <year> --is_drop_nan_percentage <bool>
+```
+
+See the help menu:
+
+```
+python src/data_processing/main.py --help
 ```
 
 ## Changes to the database

@@ -73,6 +73,15 @@ CURRENT_DIRECTORY = os.getcwd()
 
 
 class CdrDataCleaner:
+    """Class for cleaning and processing Chemical Data Reporting (CDR) data.
+
+    The class is responsible for loading, cleaning, and processing CDR data files
+
+    Attributes:
+        config (DictConfig): The configuration object containing settings and options.
+        is_drop_nan_percentage (bool): Flag to indicate whether to drop rows with NaN in the percentage column.
+
+    """
 
     def __init__(
         self,
@@ -110,8 +119,7 @@ class CdrDataCleaner:
         )
 
     def _clean_naics_code(self, naics_code: str) -> Union[tuple[str, str], tuple[None, None]]:
-        """
-        Clean the NAICS code by separating the numeric code from the title.
+        """Clean the NAICS code by separating the numeric code from the title.
 
         Args:
             naics_code (str): The NAICS code to clean.
@@ -176,6 +184,7 @@ class CdrDataCleaner:
             },
             inplace=True,
         )
+        df["industry_sector_name"] = df["industry_sector_name"].str.capitalize()
         return df
 
     def _drop_record_if_all_columns_are_null(
@@ -192,8 +201,7 @@ class CdrDataCleaner:
         columns_to_clean: List[str],
         columns_of_interest: List[str],
     ) -> pd.DataFrame:
-        """
-        General method for cleaning CDR data.
+        """General method for cleaning CDR data.
 
         Args:
             use_config (DictConfig): Configuration for the specific type of CDR use.
@@ -218,6 +226,9 @@ class CdrDataCleaner:
         df = df.astype({"casrn": "str", "naics_code": "str"})
         df = self._drop_record_if_all_columns_are_null(df, columns_of_interest)
 
+        df[["naics_code", "naics_title"]] = df["naics_code"].apply(self._clean_naics_code).apply(pd.Series)
+        df["naics_title"] = df["naics_title"].str.capitalize()
+
         return df
 
     def cleaning_industrial_processing(self) -> pd.DataFrame:
@@ -239,8 +250,6 @@ class CdrDataCleaner:
         # Merge with NAICS data for industrial processing only
         df_naics = self._load_naics_industry()
         df = pd.merge(df, df_naics, on="industry_sector_code", how="left")
-
-        df[["naics_code", "naics_title"]] = df["naics_code"].apply(self._clean_naics_code).apply(pd.Series)
 
         return df
 
@@ -267,7 +276,7 @@ if __name__ == "__main__":
     with hydra.initialize(
         version_base=None,
         config_path="../../../conf",
-        job_name="smoke-testing-tri",
+        job_name="smoke-testing-cdr",
     ):
         cfg = hydra.compose(config_name="main")
         transformer = CdrDataCleaner(

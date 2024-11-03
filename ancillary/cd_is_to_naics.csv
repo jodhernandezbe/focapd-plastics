@@ -49,8 +49,8 @@ naics_code_2007,industry_sector_code,industry_sector_name,naics_code_2012,naics_
 336,IS43,Transportation Equipment Manufacturing,336,336,336,Transportation Equipment Manufacturing
 337,IS44,Furniture and Related Product Manufacturing,337,337,337,Furniture and Related Product Manufacturing
 339,IS45,Miscellaneous Manufacturing,339,339,339,Miscellaneous Manufacturing
-42,IS44,Wholesale and Retail Trade,42,42,42,Wholesale Trade
-44,IS45,Wholesale and Retail Trade,44,44,44,Wholesale and Retail Trade
+42,IS46,Wholesale and Retail Trade,42,42,42,Wholesale Trade
+44,IS46,Wholesale and Retail Trade,44,44,44,Wholesale and Retail Trade
 45,IS46,Wholesale and Retail Trade,45,45,45,Wholesale and Retail Trade
 48,IS46,Wholesale and Retail Trade,48,48,48,Wholesale and Retail Trade
 49,IS46,Wholesale and Retail Trade,49,49,49,Wholesale and Retail Trade

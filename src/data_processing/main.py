@@ -14,6 +14,7 @@ import logging
 
 from omegaconf import DictConfig
 
+from src.data_processing.cdr.orchestator import CdrDataOrchestator
 from src.data_processing.create_sqlite_db import create_database
 from src.data_processing.tri.orchestator import TriOrchestator
 
@@ -41,12 +42,17 @@ class PlasticAdditiveDataEngineering:
         self,
         year: int,
         config: DictConfig,
+        is_drop_nan_percentage: bool = False,
     ):
         self.year = year
         self.config = config
         self.tri_orchestator = TriOrchestator(
             year=year,
             config=config,
+        )
+        self.cdr_orchestator = CdrDataOrchestator(
+            config=config,
+            is_drop_nan_percentage=is_drop_nan_percentage,
         )
         self._create_db_tables()
         self.setup_logging()
@@ -71,8 +77,11 @@ class PlasticAdditiveDataEngineering:
 
     def run(self):
         """Run the data processing pipeline."""
-        self.logger.info(f"Running data processing pipeline for the year {self.year}...")
+        self.logger.info("Starting data processing pipeline...")
+        self.logger.info(f"Running data processing pipeline for the TRI RY {self.year}...")
         self.tri_orchestator.run()
+        self.logger.info("Running data processing pipeline for the CDR RY 2022...")
+        self.cdr_orchestator.run()
         self.logger.info("Data processing pipeline completed.")
 
 
@@ -80,8 +89,20 @@ if __name__ == "__main__":
     import hydra
 
     # Set up argument parsing
-    parser = argparse.ArgumentParser(description="Process TRI data for a specified year.")
-    parser.add_argument("--year", type=int, required=True, help="The year of the TRI data to be processed")
+    parser = argparse.ArgumentParser(description="Process data for a specified year.")
+    parser.add_argument(
+        "--year",
+        type=int,
+        required=True,
+        help="The year of the TRI data to be processed",
+    )
+    parser.add_argument(
+        "--is_drop_nan_percentage",
+        type=bool,
+        default=False,
+        required=False,
+        help="Whether to drop rows with NaN percentage values in CDR.",
+    )
     args = parser.parse_args()
 
     # Initialize Hydra and compose the configuration

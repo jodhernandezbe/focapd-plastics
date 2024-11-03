@@ -3,6 +3,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI](https://github.com/jodhernandezbe/focapd-plastics/actions/workflows/publish.yml/badge.svg)](https://github.com/jodhernandezbe/focapd-plastics/actions/workflows/publish.yml)
+[![DOI](https://zenodo.org/badge/879061880.svg)](https://doi.org/10.5281/zenodo.14031589)
 
 ![Project Logo](https://github.com/jodhernandezbe/focapd-plastics/blob/master/assets/logo.png)
 

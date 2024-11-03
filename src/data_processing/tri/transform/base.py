@@ -58,6 +58,7 @@ from typing import Dict, List, Tuple, cast
 import pandas as pd
 from omegaconf import DictConfig
 
+from src.data_processing.naics_api_queries import NaicsDataFetcher
 from src.data_processing.tri.utils import ConversionFactor, TriDataHelper
 
 CURRENT_DIRECTORY = os.getcwd()
@@ -291,6 +292,8 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
         self._management_data: pd.DataFrame
         self._release_data: pd.DataFrame
         self.is_on_site = is_on_site
+        self.census_fetcher = NaicsDataFetcher(config)
+        self.naics_code_column = self.config.tri_files[self.file_type].naics_code_column
 
     def _get_unit_column(self) -> str:
         """Retrieve the column marked as 'is_unit_of_measure' in the config.
@@ -562,3 +565,14 @@ class TriFileNumericalTransformer(TriFileBaseTransformer):
         df = pd.DataFrame({"name": release_columns})
         df["is_on_site"] = self.is_on_site
         return df
+
+    def look_for_facility_naics_code(self):
+        """Look for facility NAICS code in the data."""
+        naics_results = self.census_fetcher.process_naics_codes(self.data, self.naics_code_column)
+        self.data = self.data.merge(
+            naics_results,
+            left_on=self.naics_code_column,
+            right_on="naics_code",
+            how="left",
+        )
+        self.data = self.data.drop(columns=[self.naics_code_column])

@@ -48,7 +48,16 @@ categorization, supporting comprehensive data logging and retrieval.
 """
 
 
-from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String, Table
+from sqlalchemy import (
+    Boolean,
+    Column,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Table,
+    UniqueConstraint,
+)
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import declarative_base, relationship
 
@@ -89,8 +98,106 @@ class Additive(Base):
         nullable=False,
     )
 
+    __table_args__ = (
+        UniqueConstraint("tri_chemical_id", name="unique_tri_chemical_id"),
+        UniqueConstraint("name", name="unique_name"),
+    )
+
     def __repr__(self):
         return f"<Additive(name={self.name}, tri_chemical_id={self.tri_chemical_id})>"
+
+
+class ConsumerCommercialProductCategory(Base):
+    """Represents consumer/commercial product categories."""
+
+    __tablename__ = "consumer_commercial_product_category"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+    )
+    name = Column(
+        String,
+        nullable=False,
+        unique=True,
+    )
+
+    __table_args__ = (
+        UniqueConstraint(
+            "name",
+            name="unique_product_category",
+        ),
+    )
+
+    def __repr__(self):
+        return f"<ConsumerCommercialProductCategory(name={self.name})>"
+
+
+class ConsumerCommercialFunctionCategory(Base):
+    """Represents consumer/commercial function categories."""
+
+    __tablename__ = "consumer_commercial_function_category"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+    )
+    name = Column(
+        String,
+        nullable=False,
+        unique=True,
+    )
+
+    __table_args__ = (UniqueConstraint("name", name="unique_function_category"),)
+
+    def __repr__(self):
+        return f"<ConsumerCommercialFunctionCategory(name={self.name})>"
+
+
+class IndustryFunctionCategory(Base):
+    """Represents industry function categories."""
+
+    __tablename__ = "industry_function_category"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+    )
+    name = Column(
+        String,
+        nullable=False,
+        unique=True,
+    )
+
+    __table_args__ = (UniqueConstraint("name", name="unique_industry_function_category"),)
+
+    def __repr__(self):
+        return f"<IndustryFunctionCategory(name={self.name})>"
+
+
+class IndustrialTypeOfProcessOrUse(Base):
+    """Represents industrial types of processes or uses."""
+
+    __tablename__ = "industrial_type_of_process_or_use"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+    )
+    name = Column(
+        String,
+        nullable=False,
+        unique=True,
+    )
+
+    __table_args__ = (UniqueConstraint("name", name="unique_process_or_use"),)
+
+    def __repr__(self):
+        return f"<IndustrialTypeOfProcessOrUse(name={self.name})>"
 
 
 class IndustrySector(Base):
@@ -111,8 +218,94 @@ class IndustrySector(Base):
         nullable=True,
     )
 
+    __table_args__ = (
+        UniqueConstraint(
+            "naics_code",
+            "naics_title",
+            name="unique_column_code_title",
+        ),
+    )
+
     def __repr__(self):
         return f"<IndustrySector(naics_code={self.naics_code}, naics_title={self.naics_title})>"
+
+
+class IndustryUseSector(Base):
+    """Represents the industry use sector for CRD industrial processing and use."""
+
+    __tablename__ = "industry_use_sector"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+    )
+    code = Column(
+        String,
+        nullable=False,
+        unique=True,
+    )
+    name = Column(
+        String,
+        nullable=True,
+    )
+
+    __table_args__ = (
+        UniqueConstraint(
+            "code",
+            name="unique_industry_sector_code",
+        ),
+    )
+
+    def __repr__(self):
+        return f"<IndustryUseSector(code={self.code}, name={self.name})>"
+
+
+class IndustryUseSectorNaics(Base):
+    """Represents the NAICS entries for industry use sectors."""
+
+    __tablename__ = "industry_use_sector_naics"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+    )
+    naics_code_2007 = Column(
+        String,
+        nullable=False,
+    )
+    industry_use_sector_id = Column(
+        Integer,
+        ForeignKey("industry_use_sector.id"),
+        nullable=False,
+    )
+    naics_code_2012 = Column(
+        String,
+        nullable=True,
+    )
+    naics_code_2017 = Column(
+        String,
+        nullable=True,
+    )
+    naics_code_2022 = Column(
+        String,
+        nullable=True,
+    )
+    industry_sector_id = Column(
+        Integer,
+        ForeignKey("industry_sector.id"),
+        nullable=True,
+    )
+
+    # Relationships
+    industry_sector = relationship("IndustryUseSector", backref="naics_entries")
+    industry_sector_ref = relationship("IndustrySector", backref="naics_links")
+
+    __table_args__ = (UniqueConstraint("naics_code_2007", name="unique_naics_code_2007"),)
+
+    def __repr__(self):
+        return f"<IndustryUseSectorNaics(naics_code_2007={self.naics_code_2007}, " f"naics_code_2017={self.naics_code_2017})>"
 
 
 class ChemicalActivity(Base):
@@ -144,6 +337,8 @@ class ChemicalActivity(Base):
         remote_side=[id],
         backref="sub_activities",
     )
+
+    __table_args__ = (UniqueConstraint("name", name="unique_activity_name"),)
 
     def __repr__(self):
         return f"<ChemicalActivity(name={self.name}, description={self.description})>"
@@ -212,6 +407,13 @@ class EndOfLifeActivity(Base):
         default=False,
     )
 
+    __table_args__ = (
+        UniqueConstraint(
+            "name",
+            name="unique_end_of_life_name",
+        ),
+    )
+
     def __repr__(self):
         return f"<EndOfLifeActivity(name={self.name}, management_type={self.management_type})>"
 
@@ -235,6 +437,13 @@ class ReleaseType(Base):
         default=False,
     )
 
+    __table_args__ = (
+        UniqueConstraint(
+            "name",
+            name="unique_release_type_name",
+        ),
+    )
+
     def __repr__(self):
         return f"<ReleaseType(name={self.name}, is_on_site={self.is_on_site})>"
 
@@ -247,6 +456,10 @@ class Record(Base):
         Integer,
         primary_key=True,
         autoincrement=True,
+    )
+    trifid = Column(
+        String,
+        nullable=False,
     )
     additive_id = Column(
         Integer,
@@ -309,3 +522,116 @@ class Record(Base):
 
     def __repr__(self):
         return f"<Record(amount={self.amount}, additive_id={self.additive_id})>"
+
+
+class ConsumerCommercialUse(Base):
+    """Represents consumer and commercial use records in CDR."""
+
+    __tablename__ = "consumer_commercial_use"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+    )
+    additive_id = Column(
+        Integer,
+        ForeignKey("additive.id"),
+        nullable=False,
+    )
+    industry_sector_id = Column(
+        Integer,
+        ForeignKey("industry_sector.id"),
+        nullable=False,
+    )
+    product_category_id = Column(
+        Integer,
+        ForeignKey("consumer_commercial_product_category.id"),
+        nullable=True,
+    )
+    function_category_id = Column(
+        Integer,
+        ForeignKey("consumer_commercial_function_category.id"),
+        nullable=True,
+    )
+    type_of_use = Column(
+        String,
+        nullable=True,
+    )
+    percentage = Column(
+        Float,
+        nullable=True,
+    )
+
+    additive = relationship("Additive", backref="consumer_commercial_uses")
+    product_category = relationship("ConsumerCommercialProductCategory", backref="uses")
+    function_category = relationship("ConsumerCommercialFunctionCategory", backref="uses")
+    industry_sector = relationship("IndustrySector", backref="consumer_commercial_uses")
+
+    def __repr__(self):
+        return f"<ConsumerCommercialUse(additive_id={self.additive_id}, naics_code={self.naics_code})>"
+
+
+class IndustrialUse(Base):
+    """Represents industrial use records."""
+
+    __tablename__ = "industrial_use"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+    )
+    additive_id = Column(
+        Integer,
+        ForeignKey("additive.id"),
+        nullable=False,
+    )
+    industrial_type_of_process_or_use_id = Column(
+        Integer,
+        ForeignKey("industrial_type_of_process_or_use.id"),
+        nullable=True,
+    )
+    industry_function_category_id = Column(
+        Integer,
+        ForeignKey("industry_function_category.id"),
+        nullable=True,
+    )
+    percentage = Column(
+        Float,
+        nullable=True,
+    )
+    industry_use_sector_id = Column(
+        Integer,
+        ForeignKey("industry_use_sector.id"),
+        nullable=True,
+    )
+    industry_sector_id = Column(
+        Integer,
+        ForeignKey("industry_sector.id"),
+        nullable=True,
+    )
+
+    additive = relationship(
+        "Additive",
+        backref="industrial_uses",
+    )
+    industrial_type = relationship(
+        "IndustrialTypeOfProcessOrUse",
+        backref="uses",
+    )
+    function_category = relationship(
+        "IndustryFunctionCategory",
+        backref="uses",
+    )
+    industry_use_sector = relationship(
+        "IndustryUseSector",
+        backref="industrial_uses",
+    )
+    industry_sector = relationship(
+        "IndustrySector",
+        backref="industrial_uses",
+    )
+
+    def __repr__(self):
+        return f"<IndustrialUse(additive_id={self.additive_id}, naics_code={self.naics_code})>"

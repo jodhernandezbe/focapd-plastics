@@ -1,0 +1,68 @@
+naics_code_2007,industry_sector_code,industry_sector_name,naics_code_2012,naics_code_2017,naics_code_2022,naics_title
+11,IS1,"Agriculture, Forestry, Fishing and Hunting",11,11,11,Agriculture Forestry Fishing and Hunting
+211,IS2,"Oil and Gas Drilling, Extraction, and Support Activities",211,211,211,Oil and Gas Extraction
+212,IS3,Mining (except Oil and Gas),212,212,212,Mining except Oil and Gas
+22,IS4,Utilities,22,22,22,Utilities
+23,IS5,Construction,23,23,23,Construction
+311,IS6,"Food, beverage, and tobacco product manufacturing",311,311,311,Food Manufacturing
+312,IS6,"Food, beverage, and tobacco product manufacturing",312,312,312,Beverage and Tobacco Product Manufacturing
+313,IS7,"Textiles, apparel, and leather manufacturing",313,313,313,Textile Mills
+314,IS7,"Textiles, apparel, and leather manufacturing",314,314,314,Textile Product Mills
+315,IS7,"Textiles, apparel, and leather manufacturing",315,315,315,Apparel Manufacturing
+316,IS7,"Textiles, apparel, and leather manufacturing",316,316,316,Leather and Allied Product Manufacturing
+321,IS8,Wood Product Manufacturing,321,321,321,Wood Product Manufacturing
+322,IS9,Paper Manufacturing,322,322,322,Paper Manufacturing
+323,IS10,Printing and Related Support Activities,323,323,323,Printing and Related Support Activities
+32411,IS11,Petroleum Refineries,32411,32411,32411,Petroleum Refineries
+32412,IS12,"Asphalt Paving, Roofing, and Coating Materials Manufacturing",32412,32412,32412,Asphalt Paving Roofing and Saturated Materials Manufacturing
+324191,IS13,Petroleum Lubricating Oil and Grease Manufacturing,324191,324191,324191,Petroleum Lubricating Oil and Grease Manufacturing
+324199,IS14,All Other Petroleum and Coal Products Manufacturing,324199,324199,324199,All Other Petroleum and Coal Products Manufacturing
+32511,IS15,Petrochemical Manufacturing,32511,32511,32511,Petrochemical Manufacturing
+32512,IS16,Industrial Gas Manufacturing,32512,32512,32512,Industrial Gas Manufacturing
+32513,IS17,Synthetic Dye and Pigment Manufacturing,32513,32513,32513,Synthetic Dye and Pigment Manufacturing
+325182,IS18,Carbon Black Manufacturing,325180,325180,325180,Other Basic Inorganic Chemical Manufacturing
+32518,IS19,All Other Basic Inorganic Chemical Manufacturing,32518,32518,32518,Other Basic Inorganic Chemical Manufacturing
+325192,IS20,Cyclic Crude and Intermediate Manufacturing,325194,325194,325194,Cyclic Crude Intermediate and Gum and Wood Chemical Manufacturing
+32519,IS21,All Other Basic Organic Chemical Manufacturing,32519,32519,32519,Other Basic Organic Chemical Manufacturing
+325211,IS22,Plastics Material and Resin Manufacturing,325211,325211,325211,Plastics Material and Resin Manufacturing
+325212,IS23,Synthetic Rubber Manufacturing,325212,325212,325212,Synthetic Rubber Manufacturing
+325221,IS24,Organic Fiber Manufacturing,325220,325220,325220,Artificial and Synthetic Fibers and Filaments Manufacturing
+325222,IS24,Organic Fiber Manufacturing,325220,325220,325220,Artificial and Synthetic Fibers and Filaments Manufacturing
+3253,IS25,"Pesticide, Fertilizer, and Other Agricultural Chemical Manufacturing",3253,3253,3253,Pesticide Fertilizer and Other Agricultural Chemical Manufacturing
+3254,IS26,Pharmaceutical and Medicine Manufacturing,3254,3254,3254,Pharmaceutical and Medicine Manufacturing
+32551,IS27,Paint and Coating Manufacturing,32551,32551,32551,Paint and Coating Manufacturing
+32552,IS28,Adhesive Manufacturing,32552,32552,32552,Adhesive Manufacturing
+3256,IS29,"Soap, Cleaning Compound, and Toilet Preparation Manufacturing",3256,3256,3256,Soap Cleaning Compound and Toilet Preparation Manufacturing
+32591,IS30,Printing Ink Manufacturing,32591,32591,32591,Printing Ink Manufacturing
+32592,IS31,Explosives Manufacturing,32592,32592,32592,Explosives Manufacturing
+325991,IS32,Custom Compounding of Purchased Resins,325991,325991,325991,Custom Compounding of Purchased Resins
+325992,IS33,"Photographic Film, Paper, Plate, and Chemical Manufacturing",325992,325992,325992,Photographic Film Paper Plate and Chemical Manufacturing
+325998,IS34,All Other Chemical Product and Preparation Manufacturing,325998,325998,325998,All Other Miscellaneous Chemical Product and Preparation Manufacturing
+3261,IS35,Plastics Product Manufacturing,3261,3261,3261,Plastics Product Manufacturing
+3262,IS36,Rubber Product Manufacturing,3262,3262,3262,Rubber Product Manufacturing
+327,IS37,"Nonmetallic Mineral Product Manufacturing (includes clay, glass, cement, concrete, lime, gypsum, and other nonmetallic mineral product manufacturing)",327,327,327,Nonmetallic Mineral Product Manufacturing
+331,IS38,Primary Metal Manufacturing,331,331,331,Primary Metal Manufacturing
+332,IS39,Fabricated Metal Product Manufacturing,332,332,332,Fabricated Metal Product Manufacturing
+333,IS40,Machinery Manufacturing,333,333,333,Machinery Manufacturing
+334,IS41,Computer and Electronic Product Manufacturing,334,334,334,Computer and Electronic Product Manufacturing
+335,IS42,"Electrical Equipment, Appliance, and Component Manufacturing",335,335,335,Electrical Equipment Appliance and Component Manufacturing
+336,IS43,Transportation Equipment Manufacturing,336,336,336,Transportation Equipment Manufacturing
+337,IS44,Furniture and Related Product Manufacturing,337,337,337,Furniture and Related Product Manufacturing
+339,IS45,Miscellaneous Manufacturing,339,339,339,Miscellaneous Manufacturing
+42,IS44,Wholesale and Retail Trade,42,42,42,Wholesale Trade
+44,IS45,Wholesale and Retail Trade,44,44,44,Wholesale and Retail Trade
+45,IS46,Wholesale and Retail Trade,45,45,45,Wholesale and Retail Trade
+48,IS46,Wholesale and Retail Trade,48,48,48,Wholesale and Retail Trade
+49,IS46,Wholesale and Retail Trade,49,49,49,Wholesale and Retail Trade
+51,IS47,Services,51,51,51,Information
+52,IS47,Services,52,52,52,Finance and Insurance
+53,IS47,Services,53,53,53,Real Estate and Rental and Leasing
+54,IS47,Services,54,54,54,Professional Scientific and Technical Services
+55,IS47,Services,55,55,55,Management of Companies and Enterprises
+56,IS47,Services,56,56,56,Administrative and Support and Waste Management and Remediation Services
+61,IS47,Services,61,61,61,Educational Services
+62,IS47,Services,62,62,62,Health Care and Social Assistance
+71,IS47,Services,71,71,71,Arts Entertainment and Recreation
+72,IS47,Services,72,72,72,Accommodation and Food Services
+81,IS47,Services,81,81,81,Other Services except Public Administration
+,IS48,Other,,,,

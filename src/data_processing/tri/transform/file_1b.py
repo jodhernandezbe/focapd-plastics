@@ -15,7 +15,6 @@ Attributes:
     file_type (str): The type of TRI data file.
     config (DictConfig): Configuration object for setting parameters.
     data (pd.DataFrame): The main DataFrame containing raw or processed TRI data.
-    naics_code_column (str): The column name in the TRI data containing NAICS codes.
 
 Methods:
     __init__(file_name: str, config: DictConfig): Initializes the transformer with file name, file type,
@@ -23,9 +22,6 @@ Methods:
     aggregate_yes_no() -> pd.DataFrame: Aggregates the data by grouping on all columns except a
         specified "Yes/No" column. For each group, if any entry in the "Yes/No" column is 'Yes',
         the aggregated value for the group will be 'Yes'; otherwise, it will be 'No'.
-    look_for_facility_naics_code(): Enriches the TRI data with NAICS descriptions by querying
-        the Census API. Merges the API results back into the main data and drops the original
-        NAICS code column.
     process(): Orchestrates the full data transformation by selecting required columns, preparing
         the data for aggregation, enriching with NAICS descriptions, and applying Yes/No aggregation.
 
@@ -43,11 +39,6 @@ Example Usage:
     transformer.process()
     ```
 
-Notes:
-    - `aggregate_yes_no` provides a structured way to summarize Yes/No columns, ensuring data is consistent.
-    - The `look_for_facility_naics_code` method relies on the Census API to fetch NAICS descriptions,
-      enhancing the data with useful contextual information about facility operations.
-
 """
 
 from typing import cast
@@ -55,7 +46,6 @@ from typing import cast
 import pandas as pd
 from omegaconf import DictConfig
 
-from src.data_processing.naics_api_queries import NaicsDataFetcher
 from src.data_processing.tri.transform.base import TriFileBaseTransformer
 
 
@@ -76,8 +66,6 @@ class TriFile1bTransformer(TriFileBaseTransformer):
         config: DictConfig,
     ):
         super().__init__(file_name, "file_1b", config)
-        self.census_fetcher = NaicsDataFetcher(config)
-        self.naics_code_column = self.config.tri_files.file_1b.naics_code_column
 
     def aggregate_yes_no(self) -> pd.DataFrame:
         """Aggregate the DataFrame based on Yes/No values in a specified column.
@@ -100,31 +88,17 @@ class TriFile1bTransformer(TriFileBaseTransformer):
 
         return cast(pd.DataFrame, aggregated_df)
 
-    def look_for_facility_naics_code(self):
-        """Look for facility NAICS code in the data."""
-        naics_results = self.census_fetcher.process_naics_codes(self.data, self.naics_code_column)
-        self.data = self.data.merge(
-            naics_results,
-            left_on=self.naics_code_column,
-            right_on="naics_code",
-            how="left",
-        )
-        self.data = self.data.drop(columns=[self.naics_code_column])
-
     def process(self):
         """Process the TRI data file."""
         needed_columns = self._get_needed_columns()
         self.data = self.select_columns(needed_columns)
         self.data = self.filter_desired_chemicals()
         self.data = self.prepare_unpivot_columns()
-        self.data[self.naics_code_column] = self.data[self.naics_code_column].fillna(0).astype(int).astype(str)
         self.data["is_performed"] = self.data["is_performed"].fillna("No")
         self.data = self.aggregate_yes_no()
 
         if self.data.empty:
             raise ValueError("The data is empty after processing. Please check the configuration settings and the input data.")
-
-        self.look_for_facility_naics_code()
 
 
 if __name__ == "__main__":

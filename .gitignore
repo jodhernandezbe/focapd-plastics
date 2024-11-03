@@ -165,3 +165,6 @@ cython_debug/
 
 # hydra runs
 outputs
+
+*CDR Consumer and Commercial Use Information.csv
+*CDR Industrial Processing and Use Information.csv

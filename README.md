@@ -1,11 +1,10 @@
 
 # FOCAPD SI
 
-<div align="center">
-  <img src="https://github.com/jodhernandezbe/focapd-plastics/blob/master/assets/logo.png"
-  alt="Project Logo"
-  width="500"/>
-</div>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI](https://github.com/jodhernandezbe/focapd-plastics/actions/workflows/publish.yml/badge.svg)](https://github.com/jodhernandezbe/focapd-plastics/actions/workflows/publish.yml)
+
+![Project Logo](https://github.com/jodhernandezbe/focapd-plastics/blob/master/assets/logo.png)
 
 ## Overview
 
@@ -58,6 +57,10 @@ This repository contains the code to generate discrete distribution based on TRI
         ├── db_queries.py
         └── dist_generator.py
 ```
+
+## Entity relational diagram (ERD)
+
+![Project Logo](https://github.com/jodhernandezbe/focapd-plastics/blob/master/data/processed/erd_tri_eol_additives.png)
 
 ## Requirements
 
@@ -173,6 +176,20 @@ To run the data processing pipeline, navigate to the repository's main directory
 python src/data_processing/main.py --year <year>
 ```
 
+## Changes to the database
+
+If you generate changes to the database schema, create migrations by running:
+
+```
+alembic revision --autogenerate -m "<description-string>"
+```
+
+Then apply the migrations by running:
+
+```
+alembic upgrade head
+```
+
 ## TODO
 
 ### TRI data retrieval
@@ -203,6 +220,10 @@ Feel free to use a data orchestator like Airflow or Prefect. This would be more 
 
 The project structure follows a modular approach to facilitate the expansion and mantainability. In addition, it follows a single responsability principle and separation of concern. Keep this principle as part of good practices and clean code.
 
-## PYPI
+## PyPI
 
-The project was released as a Python packaged in [PYPI](https://pypi.org/project/focapd/).
+The project was released as a Python packaged in [PyPI](https://pypi.org/project/focapd/).
+
+## Disclaimer
+
+The views expressed in this article are those of the authors and do not necessarily represent the views or policies of the U.S. Environmental Protection Agency. Any mention of trade names, products, or services does not imply an endorsement by the U.S. Government or the U.S. Environmental Protection Agency. The U.S. Environmental Protection Agency does not endorse any commercial products, service, or enterprises.

@@ -88,11 +88,19 @@ class TriFile3aTransformer(TriFileNumericalTransformer):
             self.df_management,
             off_site_frs_id_column,
         )
+        frs_results.rename(columns={"naics_code": "off_site_naics_code"}, inplace=True)
         frs_results.dropna(
-            subset=["naics_code"],
+            subset=["off_site_naics_code"],
             inplace=True,
         )
-        naics_results = self.census_fetcher.process_naics_codes(frs_results, "naics_code")
+        naics_results = self.census_fetcher.process_naics_codes(frs_results, "off_site_naics_code")
+        naics_results.rename(
+            columns={
+                "naics_code": "off_site_naics_code",
+                "naics_title": "off_site_naics_title",
+            },
+            inplace=True,
+        )
 
         merged_df = self.df_management.merge(
             frs_results,
@@ -103,7 +111,7 @@ class TriFile3aTransformer(TriFileNumericalTransformer):
 
         merged_df = merged_df.merge(
             naics_results,
-            on="naics_code",
+            on="off_site_naics_code",
             how="left",
         )
         merged_df = merged_df.drop(columns=["registry_id"])
@@ -117,6 +125,8 @@ class TriFile3aTransformer(TriFileNumericalTransformer):
         self.fill_missing_values()
         self.data = self.prepare_unpivot_columns()
         self.to_kilogram()
+        self.data[self.naics_code_column] = self.data[self.naics_code_column].fillna(0).astype(int).astype(str)
+        self.look_for_facility_naics_code()
         self.df_releases, self.df_management = self.separate_releases_and_management()
         self.df_releases = self.organize_resealse_dataframe(self.df_releases)
         self.df_management = self.organize_management_dataframe(self.df_management)

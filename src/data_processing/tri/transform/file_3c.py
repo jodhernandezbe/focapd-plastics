@@ -60,8 +60,8 @@ class TriFile3cTransformer(TriFileNumericalTransformer):
         super().__init__(file_name, "file_3c", False, config)
 
     def _assign_naics_to_potw(self):
-        self.df_management["off_site_site_naics_code"] = self.config.potw_naics_code.naics_code
-        self.df_management["off_site_site_naics_title"] = self.config.potw_naics_code.naics_title
+        self.df_management["off_site_naics_code"] = self.config.potw_naics_code.naics_code
+        self.df_management["off_site_naics_title"] = self.config.potw_naics_code.naics_title
 
     def process(self):
         """Process the TRI data file."""
@@ -71,6 +71,8 @@ class TriFile3cTransformer(TriFileNumericalTransformer):
         self.fill_missing_values()
         self.data = self.prepare_unpivot_columns()
         self.to_kilogram()
+        self.data[self.naics_code_column] = self.data[self.naics_code_column].fillna(0).astype(int).astype(str)
+        self.look_for_facility_naics_code()
         self.df_management = self.aggregate_values(self.data)
         self.df_management = self.format_management_column_names(self.df_management)
         self._assign_naics_to_potw()

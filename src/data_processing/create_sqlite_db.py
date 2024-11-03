@@ -54,7 +54,10 @@ def create_database() -> Session:
     )
     DATABASE_URL = f"sqlite:///{db_path}"
 
-    engine = create_engine(DATABASE_URL, echo=True)
+    engine = create_engine(
+        DATABASE_URL,
+        echo=False,
+    )
     inspector = inspect(engine)
 
     # Check if the tables already exist

@@ -73,6 +73,7 @@ class NaicsDataFetcher:
     """Singleton class for fetching NAICS code descriptions from the Census API with caching."""
 
     _instance = None  # Singleton instance
+    _naics_cache = {}
 
     def __new__(cls, *args, **kwargs):
         """Ensure only a single instance of NaicsDataFetcher is created."""
@@ -158,6 +159,9 @@ class NaicsDataFetcher:
         Returns:
             Dict[str, Optional[str]]: A dictionary with `naics_code` and `naics_title`.
         """
+        if naics_code in self._naics_cache:
+            return {"naics_code": naics_code, "naics_title": self._naics_cache[naics_code]}
+
         full_url = (
             f"{self.base_url}"
             f"?get={"&".join(self.cfg.census_api.parameters['get']).format(time=self.time)}"
@@ -174,12 +178,14 @@ class NaicsDataFetcher:
                             naics_code,
                             session,
                         )
+                    self._naics_cache[naics_code] = naics_title
                     return {"naics_code": naics_code, "naics_title": naics_title}
                 else:
                     naics_title = await self._fetch_from_auxiliar_endpoint(
                         naics_code,
                         session,
                     )
+                    self._naics_cache[naics_code] = naics_title
                     return {"naics_code": naics_code, "naics_title": naics_title}
 
     async def _fetch_all_naics_data(
@@ -215,6 +221,7 @@ class NaicsDataFetcher:
         unique_naics_codes = df[code_column].unique().tolist()
         data = asyncio.run(self._fetch_all_naics_data(unique_naics_codes))
         result_df = pd.DataFrame(data)
+        result_df["naics_title"] = result_df["naics_title"].str.capitalize()
         return result_df
 
 

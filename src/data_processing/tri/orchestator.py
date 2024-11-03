@@ -1,7 +1,41 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/env python
 
-"""Orchestration module for the TRI data processing pipeline."""
+"""Orchestration module for the TRI data processing pipeline.
+
+This module provides a class, `TriOrchestator`, which orchestrates the data
+processing pipeline for handling TRI (Toxic Release Inventory) data. The TRI data
+processing involves reading, transforming, and loading various data files into an SQLite
+database for further analysis.
+
+Classes:
+    - TriOrchestator: A class for coordinating the end-to-end processing of TRI data files,
+      including loading, transforming, and storing data in the database.
+
+Modules Imported:
+    - DictConfig: Used for handling configuration settings.
+    - create_database: A function for setting up and creating an SQLite database session.
+    - TriDataLoader: A class responsible for loading TRI data into the database.
+    - TriFile1aTransformer, TriFile1bTransformer, TriFile3aTransformer, TriFile3cTransformer:
+      Classes for transforming different types of TRI data files.
+
+Functionality:
+    - Initializes an SQLite database session and a TRI data loader instance.
+    - Processes various TRI data files (1A, 1B, 3A, 3C) using corresponding transformer classes.
+    - Loads specific data into the database, including chemical activity and plastic additives.
+    - Manages and releases data using helper methods for different TRI data file types.
+
+Methods:
+    - `__init__`: Initializes the `TriOrchestator` class with a specified year and configuration.
+    - `process_file`: A helper method that processes a specific TRI data file using a transformer class.
+    - `process_1b`: Processes the TRI 1B data file.
+    - `process_1a`: Processes the TRI 1A data file.
+    - `process_3a`: Processes the TRI 3A data file.
+    - `process_3c`: Processes the TRI 3C data file.
+    - `run`: Coordinates the overall data processing workflow, loading data into the database
+      and handling specific data transformations and loading tasks.
+"""
+
 
 from omegaconf import DictConfig
 

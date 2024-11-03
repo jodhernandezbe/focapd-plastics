@@ -85,6 +85,8 @@ class TriFile1aTransformer(TriFileNumericalTransformer):
         self.fill_missing_values()
         self.data = self.prepare_unpivot_columns()
         self.to_kilogram()
+        self.data[self.naics_code_column] = self.data[self.naics_code_column].fillna(0).astype(int).astype(str)
+        self.look_for_facility_naics_code()
         self.df_releases, self.df_management = self.separate_releases_and_management()
         self.df_releases = self.organize_resealse_dataframe(self.df_releases)
         self.df_management = self.organize_management_dataframe(self.df_management)
@@ -102,3 +104,6 @@ if __name__ == "__main__":
         cfg = hydra.compose(config_name="main")
         transformer = TriFile1aTransformer("US_1a_2022.txt", cfg)
         transformer.process()
+
+        print(transformer.df_releases.info())
+        print(transformer.df_management.info())

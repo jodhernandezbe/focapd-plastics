@@ -23,6 +23,8 @@ omegaconf = "^2.3.0"
 sqlalchemy = "^2.0.36"
 aiohttp = "^3.10.10"
 python-dotenv = "^1.0.1"
+pgmpy = "^0.1.26"
+alembic = "^1.13.3"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.6.0"

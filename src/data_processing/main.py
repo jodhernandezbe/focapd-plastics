@@ -17,8 +17,6 @@ from omegaconf import DictConfig
 from src.data_processing.create_sqlite_db import create_database
 from src.data_processing.tri.orchestator import TriOrchestator
 
-logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
-
 
 class PlasticAdditiveDataEngineering:
     """Class for orchestrating the data processing pipeline for TRI data.
@@ -65,6 +63,11 @@ class PlasticAdditiveDataEngineering:
             datefmt="%Y-%m-%d %H:%M:%S",
         )
         self.logger = logging.getLogger(__name__)
+
+        sqlalchemy_logger = logging.getLogger("sqlalchemy.engine")
+        sqlalchemy_logger.setLevel(logging.WARNING)
+        for handler in sqlalchemy_logger.handlers:
+            handler.setLevel(logging.WARNING)
 
     def run(self):
         """Run the data processing pipeline."""

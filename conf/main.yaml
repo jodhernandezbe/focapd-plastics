@@ -38,9 +38,6 @@ industry_sectors:
     - code: "326140"
       name: Polystyrene Foam Product Manufacturing
       description: Facilities that manufacture polystyrene foam products, widely used in insulation, packaging, and disposables.
-    - code: "326150"
-      name: Urethane and Other Foam Product (except Polystyrene) Manufacturing
-      description: Facilities involved in the production of urethane and other types of foam products, commonly used in furniture and construction.
     - code: "326160"
       name: Plastics Bottle Manufacturing
       description: Facilities that manufacture plastic bottles used in the beverage, food, and personal care industries.
@@ -50,9 +47,6 @@ industry_sectors:
     - code: "326199"
       name: All Other Plastics Product Manufacturing
       description: Facilities involved in the production of various other plastic products not classified elsewhere.
-    - code: "326140"
-      name: Polystyrene Foam Product Manufacturing
-      description: Facilities that manufacture polystyrene foam products, widely used in insulation, packaging, and disposables.
     - code: "326150"
       name: Urethane and Other Foam Product (except Polystyrene) Manufacturing
       description: Facilities involved in the production of urethane and other foam products, commonly used in furniture and construction.
@@ -181,15 +175,18 @@ plastic_additives:
       name: '1,1-Dichloroethylene'
 potw_naics_code:
   naics_code: "221320"
-  naics_title: Sewage Treatment Facilities
+  naics_title: Sewage treatment facilities
 tri_files:
   columns_folder: ancillary
   file_1a:
     var_name: eol_name
     value_name: amount
     columns_file: tri_file_1a_columns.txt
+    naics_code_column: primary_naics_code
     needed_columns:
       - name: trifid
+        is_general_info: true
+      - name: primary_naics_code
         is_general_info: true
       - name: tri_chem_id
         is_general_info: true
@@ -258,11 +255,8 @@ tri_files:
     var_name: chemical_activity
     value_name: is_performed
     columns_file: tri_file_1b_columns.txt
-    naics_code_column: primary_naics_code
     needed_columns:
       - name: trifid
-        is_general_info: true
-      - name: primary_naics_code
         is_general_info: true
       - name: tri_chem_id
         is_general_info: true
@@ -321,8 +315,11 @@ tri_files:
     var_name: eol_name
     value_name: amount
     columns_file: tri_file_3a_columns.txt
+    naics_code_column: primary_naics_code
     needed_columns:
       - name: trifid
+        is_general_info: true
+      - name: primary_naics_code
         is_general_info: true
       - name: tri_chem_id
         is_general_info: true
@@ -420,11 +417,14 @@ tri_files:
     var_name: eol_name
     value_name: amount
     columns_file: tri_file_3c_columns.txt
+    naics_code_column: primary_naics_code
     needed_columns:
       - name: unit_of_measure
         is_unit_of_measure: true
         is_general_info: true
       - name: trifid
+        is_general_info: true
+      - name: primary_naics_code
         is_general_info: true
       - name: tri_chem_id
         is_general_info: true
@@ -455,4 +455,24 @@ census_api:
     naics_code: "NAICS={naics_code}"
     key: "{census_api_key}"
 usspending_api:
-  base_url: https://api.usaspending.gov/api/v2/references/naics/{naics_code}/
+  base_url: "https://api.usaspending.gov/api/v2/references/naics/{naics_code}/"
+cdr_data:
+  commercial_and_consumer_use:
+    file: "2020 CDR Consumer and Commercial Use Information.csv"
+    needed_columns:
+      casrn: "CHEMICAL ID W/O DASHES"
+      naics_code: "SITE NAICS CODE 1"
+      consumer_commercial_product_category: "CONSUMER / COMMERCIAL PRODUCT CATEGORY"
+      consumer_commercial_function_category: "CONS / COMM FUNCTION CATEGORY"
+      type_of_use: "CONS OR COMM USE"
+      percentage: "C / C PV PCT"
+  industrial_use:
+    file: "2020 CDR Industrial Processing and Use Information.csv"
+    industry_sectors_cdr: https://www.epa.gov/chemical-data-reporting/industrial-sectors-subject-chemical-data-reporting
+    needed_columns:
+      casrn: "CHEMICAL ID W/O DASHES"
+      naics_code: "SITE NAICS CODE 1"
+      industrial_type_of_process_or_use: "INDUSTRIAL TYPE OF PROCESS OR USE OPERATION"
+      industry_sector_code: "IND SECT CODE"
+      industry_function_category: "INDUSTRIAL FUNCTION CATEGORY"
+      percentage: "IND PV PCT"

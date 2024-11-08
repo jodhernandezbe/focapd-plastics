@@ -65,6 +65,123 @@ industry_sectors:
     - code: "326299"
       name: All Other Rubber Product Manufacturing
       description: Facilities producing miscellaneous rubber products, many of which support plastic manufacturing processes or products.
+    - code: "238350"
+      name: Finish Carpentry Contractors
+      description: May be considered in plastic-related sectors due to the use of plastic materials for trim, moldings, and finish work in construction.
+    - code: "313320"
+      name: Fabric Coating Mills
+      description: Relevant to plastic-related sectors as they may coat textiles with plastic polymers for durability and water resistance.
+    - code: "314110"
+      name: Carpet and Rug Mills
+      description: Involves plastic-related sectors through the use of synthetic fibers, including plastics, in the production of carpets and rugs.
+    - code: "314910"
+      name: Textile Bag and Canvas Mills
+      description: Utilizes synthetic fabrics and plastic-based coatings to produce durable textile bags and canvas products.
+    - code: "314999"
+      name: All Other Miscellaneous Textile Product Mills
+      description: May involve plastic fibers or coatings in the manufacturing of various specialty textile products.
+    - code: "315210"
+      name: Cut and Sew Apparel Contractors
+      description: Could be considered in plastic-related sectors due to the use of synthetic materials, including plastics, in apparel production.
+    - code: "315250"
+      name: Cut and Sew Apparel Manufacturing (except Contractors)
+      description: Engages in the use of plastic-derived synthetic fibers and materials in the manufacturing of clothing.
+    - code: "315990"
+      name: Apparel Accessories and Other Apparel Manufacturing
+      description: Often involves the use of plastic materials for accessories such as belts, hats, and gloves.
+    - code: "316210"
+      name: Footwear Manufacturing
+      description: Frequently uses plastic and synthetic materials for soles, uppers, and other components of footwear.
+    - code: "322220"
+      name: Paper Bag and Coated and Treated Paper Manufacturing
+      description: Involves plastic-related sectors through the use of plastic coatings to make paper products more durable and water-resistant.
+    - code: "322230"
+      name: Stationary Product Manufacturing
+      description: May use plastic coatings or components in the production of stationery items.
+    - code: "325199"
+      name: All Other Basic Organic Chemical Manufacturing
+      description: Produces chemicals that are often used in the creation of plastic products, such as resins and polymers.
+    - code: "325510"
+      name: Paint and Coating Manufacturing
+      description: Relevant to plastic-related sectors as it involves the use of plastic resins and polymers in paint formulations.
+    - code: "328390"
+      name: Other Building Finishing Contractors
+      description: Uses plastic materials for finishing tasks, including vinyl siding, plastic moldings, and other building components.
+    - code: "332812"
+      name: Metal Coating, Engraving, and Allied Services to Manufacturers
+      description: May coat metal with plastic or plastic-based materials to enhance durability and prevent corrosion.
+    - code: "332813"
+      name: Electroplating, Plating, Polishing, Anodizing, and Coloring
+      description: Can involve the application of plastic-based coatings for protective and decorative purposes.
+    - code: "333215"
+      name: Showcase, Partition, Shelving, and Locker Manufacturing
+      description: Uses plastic materials in the manufacturing of showcases, partitions, and shelving units for lightweight and cost-effective products.
+    - code: "333248"
+      name: All Other Industrial Machinery Manufacturing
+      description: Machinery may involve plastic parts for lightweight, cost-effective, and corrosion-resistant features.
+    - code: "333310"
+      name: Commercial and Service Industry Machinery Manufacturing
+      description: Can involve the use of plastic components in machinery to enhance performance and reduce costs.
+    - code: "333511"
+      name: Industrial Mold Manufacturing
+      description: Produces molds used in plastic injection molding, a key process in manufacturing plastic products.
+    - code: "333514"
+      name: Special Die and Tool, Die Set, Jig, and Fixture Manufacturing
+      description: Involves the production of tools used in processes like plastic molding and forming.
+    - code: "335131"
+      name: Residential Electric Lighting Fixture Manufacturing
+      description: Utilizes plastic parts for the construction of lightweight and cost-effective lighting fixtures.
+    - code: "336612"
+      name: Boat Building
+      description: Uses plastic and composite materials for hulls and other boat components to enhance durability and reduce weight.
+    - code: "337110"
+      name: Wood Kitchen Cabinet and Countertop Manufacturing
+      description: Often involves the use of plastic laminates and surfaces in cabinet and countertop production.
+    - code: "337126"
+      name: Household Furniture (except wood and upholstered) Manufacturing
+      description: Frequently uses plastic or synthetic materials in the production of non-wood and non-upholstered furniture.
+    - code: "339115"
+      name: Ophthalmic Goods Manufacturing
+      description: Involves the use of plastic materials in lenses, frames, and other optical products.
+    - code: "339999"
+      name: All Other Miscellaneous Manufacturing
+      description: May produce various products involving plastic components or materials.
+    - code: "423220"
+      name: Home Furnishing Merchant Wholesalers
+      description: Distributes home furnishing products that may include plastic-based items such as rugs, curtains, and decorations.
+    - code: "423390"
+      name: Other Construction Material Merchant Wholesalers
+      description: Includes wholesalers that distribute construction materials, which can involve plastic components.
+    - code: "423440"
+      name: Other Commercial Equipment Merchant Wholesalers
+      description: Wholesales commercial equipment that may contain plastic parts for cost-efficiency and lightweight properties.
+    - code: "423710"
+      name: Hardware Merchant Wholesalers
+      description: May distribute hardware items that include plastic components, such as fittings and fasteners.
+    - code: "423830"
+      name: Industrial Machinery and Equipment Merchant Wholesaler
+      description: Wholesales industrial machinery that may include plastic parts for specific applications.
+    - code: "423840"
+      name: Industrial Supplies Merchant Wholesalers
+      description: Distributes industrial supplies that could include plastic-based items for manufacturing or operational purposes.
+    - code: "423930"
+      name: Recyclable Material Merchant Wholesalers
+      description: Involves the wholesale of recyclable materials, including plastics.
+    - code: "424130"
+      name: Industrial Personal Service Paper Merchant Wholesalers
+      description: Distributes disposable paper products, which may be coated with plastics for specific uses.
+    - code: "424610"
+      name: Plastics Materials and Basic Forms and Shapes Merchant Wholesalers
+      description: Directly involved in the wholesale of plastics in basic forms such as sheets, rods, and films.
+    - code: "424950"
+      name: Paint, Varnish, and Supplies Merchant Wholesalers
+      description: Wholesales paint and varnishes that may include plastic-based resins and materials.
+    - code: "424990"
+      name: Other Miscellaneous Nondurable Goods Merchant Wholesalers
+      description: May include plastic products among various nondurable goods.
+    - code: "621111"
+      name: Offices of Physicians (except Mental Health Specialists)
+      description: Not typically related to plastic sectors but may involve medical devices with plastic components.
 plastic_additives:
   description: Plastic additives based on TRI reporting.
   source: https://comptox.epa.gov/dashboard/search-results?input_type=puc&inputs=plastic_additive

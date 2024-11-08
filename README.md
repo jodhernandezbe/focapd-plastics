@@ -133,7 +133,7 @@ Note: this is not required when you commit changes.
 
 If you are running the above command or committing your changes, and one or more hooks like black or isort fail, stage their modifications to the git staging area by running `git add`. After that, you can run `commit` again.
 
-### Installing pyright language server for IDE typecheck highlighting
+## Installing pyright language server for IDE typecheck highlighting
 
 Detailed instructions: [pyright](https://microsoft.github.io/pyright/#/installation)
 
@@ -153,7 +153,9 @@ Insert that path to plugin config in your IDE as path to executable
 
 The project follows the Google style to document the code. The pre-commit hooks are configured to check this style.
 
-## Census Bureau Data:
+## Data Source and Processing
+
+### Census Bureau Data:
 
 Get your API key in: [link](https://api.census.gov/data/key_signup.html)
 
@@ -168,11 +170,11 @@ Replace ```<YOUR-CENSUS-DATA-API-KEY>``` with your actual API key.
 For more information regarding the API data: [link](https://www.census.gov/data/developers/guidance/api-user-guide.Example_API_Queries.html)
 
 
-## U.S. EPA's Envirofacts
+### U.S. EPA's Envirofacts
 
 API documentation: [link](https://www.epa.gov/enviro/envirofacts-data-service-api-v1)
 
-## Running the Data Processing Pipeline
+### Running the Data Processing Pipeline
 
 This repository includes a data processing pipeline for handling TRI (Toxics Release Inventory) data, specifically focusing on plastic additives. The pipeline can be executed by specifying the year of data you want to process.
 
@@ -190,7 +192,7 @@ See the help menu:
 python src/data_processing/main.py --help
 ```
 
-## Changes to the database
+### Changes to the database
 
 If you generate changes to the database schema, create migrations by running:
 
